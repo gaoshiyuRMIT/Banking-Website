@@ -21,7 +21,7 @@
                     @{
                         bool isLoggedIn = Context.Session.GetInt32(nameof(Customer.CustomerID)) != null;
                     }
-                    <ul class="navbar">
+                    <ul class="navbar-nav">
                         @if (isLoggedIn)
                         {
                             <li class="nav-item">
