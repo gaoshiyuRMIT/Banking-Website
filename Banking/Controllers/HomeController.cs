@@ -20,7 +20,7 @@ namespace Banking.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction(nameof(LoginController.Index));
+            return RedirectToAction("Index", "Login");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
