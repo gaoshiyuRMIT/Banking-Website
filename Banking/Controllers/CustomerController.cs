@@ -14,12 +14,21 @@ namespace Banking.Controllers
 {
     public class CustomerController : Controller
     {
+        private readonly BankingContext _context;
+
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
-        // GET: /<controller>/
-        public IActionResult Index()
+        public CustomerController(BankingContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        // GET: /<controller>/
+        public async Task<IActionResult> Index()
+        {
+            var customer = await _context.Customer.FindAsync(CustomerID);
+
+            return View(customer);
         }
 
         public IActionResult Withdraw()
