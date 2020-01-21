@@ -5,7 +5,8 @@ namespace Banking.Models
 {
     public class Login
     {
-        [Required, StringLength(8)]
+        [Key]
+        [StringLength(8)]
         [Display(Name = "User ID")]
         public string UserID { get; set; }
 
