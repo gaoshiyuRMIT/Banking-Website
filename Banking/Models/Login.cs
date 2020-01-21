@@ -13,6 +13,7 @@ namespace Banking.Models
         [Required, StringLength(64)]
         public string PasswordHash { get; set; }
 
+        public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
         public DateTime ModifyDate { get; set; }

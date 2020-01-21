@@ -13,5 +13,7 @@ namespace Banking.Data
         }
 
         public DbSet<Login> Login { get; set; }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<Account> Account { get; set; }
     }
 }
