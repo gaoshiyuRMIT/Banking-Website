@@ -20,12 +20,7 @@ namespace Banking.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return RedirectToAction(nameof(LoginController.Index));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
