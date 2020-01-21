@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,5 +17,7 @@ namespace Banking.Models
         public string State { get; set; }
         public string PostCode { get; set; }
         public string Phone { get; set; }
+
+        public virtual List<Account> Accounts { get; set; }
     }
 }
