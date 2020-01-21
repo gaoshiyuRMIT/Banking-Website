@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+
+using Banking.Data;
 
 namespace Banking
 {
@@ -24,6 +27,17 @@ namespace Banking
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<BankingContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString(nameof(BankingContext)));
+                options.UseLazyLoadingProxies();
+            });
+            services.AddSession(options =>
+            {
+                // Make the session cookie essential.
+                options.Cookie.IsEssential = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +55,7 @@ namespace Banking
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
