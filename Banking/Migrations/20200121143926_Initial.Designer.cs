@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Banking.Migrations
 {
     [DbContext(typeof(BankingContext))]
-    [Migration("20200121091645_Initial")]
+    [Migration("20200121143926_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,40 @@ namespace Banking.Migrations
                     b.ToTable("Login");
                 });
 
+            modelBuilder.Entity("Banking.Models.Transaction", b =>
+                {
+                    b.Property<int>("TransactionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DestAccountNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.HasKey("TransactionID");
+
+                    b.HasIndex("AccountNumber");
+
+                    b.HasIndex("DestAccountNumber");
+
+                    b.ToTable("Transaction");
+                });
+
             modelBuilder.Entity("Banking.Models.Account", b =>
                 {
                     b.HasOne("Banking.Models.Customer", "Customer")
@@ -116,6 +150,20 @@ namespace Banking.Migrations
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Banking.Models.Transaction", b =>
+                {
+                    b.HasOne("Banking.Models.Account", "Account")
+                        .WithMany("Transactions")
+                        .HasForeignKey("AccountNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Banking.Models.Account", "DestAccount")
+                        .WithMany()
+                        .HasForeignKey("DestAccountNumber")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
