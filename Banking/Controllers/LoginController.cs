@@ -28,7 +28,7 @@ namespace Banking.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string userId, string password)
         {
-            var login = await _context.Logins.FindAsync(userId);
+            var login = await _context.Login.FindAsync(userId);
             if (login == null || !PBKDF2.Verify(login.PasswordHash, password))
             {
                 ModelState.AddModelError("LoginFailed", "Login failed, please try again.");

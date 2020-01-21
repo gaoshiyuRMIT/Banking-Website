@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Home\Privacy.cshtml" />
