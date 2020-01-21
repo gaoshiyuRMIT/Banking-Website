@@ -1,0 +1,29 @@
+﻿@using Banking.Models
+@model Customer
+
+@{
+    ViewData["Title"] = "Accounts";
+}
+
+    <div>
+        <h2 class="display-4">Welcome, @Model.Name</h2>
+
+        <h3>Please Choose Your Accounts</h3>
+        <!--create drop-down box for choose account type-->
+        @{List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem
+            {
+                Text = "Saving Account",
+                Value = "SavingAccount"
+
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Checking Account",
+                Value = "CheckingAccount"
+
+            }); }
+        @Html.DropDownList("Choose Your Account", listItems, new { @class = "form-control" })
+
+
+    </div>

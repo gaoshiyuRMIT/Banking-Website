@@ -15,8 +15,13 @@
     <PackageReference Include="SimpleHashing" Version="1.0.3.1" />
   </ItemGroup>
 
+
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Migrations\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Customer\" />
+     <Folder Include="Migrations\" />
+
+     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 </Project>
