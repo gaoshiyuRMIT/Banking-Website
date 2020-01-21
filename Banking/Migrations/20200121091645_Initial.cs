@@ -31,7 +31,8 @@ namespace Banking.Migrations
                 {
                     AccountNumber = table.Column<int>(nullable: false),
                     AccountType = table.Column<int>(nullable: false),
-                    CustomerID = table.Column<int>(nullable: true),
+                    CustomerID = table.Column<int>(nullable: false),
+                    Balance = table.Column<decimal>(nullable: false),
                     ModifyDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -42,7 +43,7 @@ namespace Banking.Migrations
                         column: x => x.CustomerID,
                         principalTable: "Customer",
                         principalColumn: "CustomerID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,7 +52,7 @@ namespace Banking.Migrations
                 {
                     UserID = table.Column<string>(maxLength: 8, nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 64, nullable: false),
-                    CustomerID = table.Column<int>(nullable: true),
+                    CustomerID = table.Column<int>(nullable: false),
                     ModifyDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -62,7 +63,7 @@ namespace Banking.Migrations
                         column: x => x.CustomerID,
                         principalTable: "Customer",
                         principalColumn: "CustomerID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

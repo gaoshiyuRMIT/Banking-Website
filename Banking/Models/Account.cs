@@ -18,7 +18,10 @@ namespace Banking.Models
         public int AccountNumber { get; set; }
         public AccountType AccountType { get; set; }
 
+        public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
+
+        public decimal Balance { get; set; }
 
         public DateTime ModifyDate { get; set; }
     }
