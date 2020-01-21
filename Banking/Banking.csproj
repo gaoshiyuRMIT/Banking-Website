@@ -22,5 +22,6 @@
     <Folder Include="Views\Customer\" />
      <Folder Include="Migrations\" />
 
+     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 </Project>

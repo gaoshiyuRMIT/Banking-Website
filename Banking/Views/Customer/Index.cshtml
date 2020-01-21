@@ -5,24 +5,25 @@
     ViewData["Title"] = "Accounts";
 }
 
-<div>
-    <h1 class="display-4">Welcome, @Model.Name</h1>
+    <div>
+        <h2 class="display-4">Welcome, @Model.Name</h2>
 
-    <!--create drop-down box for choose account type-->
-    @{List<SelectListItem> listItems = new List<SelectListItem>();
-        listItems.Add(new SelectListItem
-        {
-            Text = "Saving Account",
-        Value = "SavingAccount"
+        <h3>Please Choose Your Accounts</h3>
+        <!--create drop-down box for choose account type-->
+        @{List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem
+            {
+                Text = "Saving Account",
+                Value = "SavingAccount"
 
-        });
-        listItems.Add(new SelectListItem
-        {
-            Text = "Checking Account",
-        Value = "CheckingAccount"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Checking Account",
+                Value = "CheckingAccount"
 
-        }); }
-    @Html.DropDownList("Choose Your Account", listItems, new { @class = "form-control" })
+            }); }
+        @Html.DropDownList("Choose Your Account", listItems, new { @class = "form-control" })
 
 
-</div>
+    </div>
