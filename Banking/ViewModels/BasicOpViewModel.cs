@@ -7,6 +7,13 @@ using Banking.Models;
 
 namespace Banking.ViewModels
 {
+    public enum OperationStatus
+    {
+        Pending = 0,
+        Successful = 1,
+        Failed = 2
+    }
+
     public class BasicOpViewModel
     {
         private List<SelectListItem> _accountTypes = new List<SelectListItem>();
@@ -32,5 +39,7 @@ namespace Banking.ViewModels
         public AccountType AccountType { get; set; }
         public decimal Amount { get; set; }
         public string Comment { get; set; }
+        public OperationStatus OperationStatus { get; set; }
+            = OperationStatus.Pending;
     }
 }
