@@ -8,12 +8,21 @@
     <div class="col-md-4">
         <div>
             <h2 class="display-4">Welcome, @Model.Customer.Name</h2>
-
+            @if (Model.OperationStatus == OperationStatus.Successful)
+            {
+                <span class="text-success">Operation is successful!</span>
+            }
+            else if (Model.OperationStatus == OperationStatus.Failed)
+            {
+                <span class="text-danger">Operation failed!</span>
+            }
             <form asp-action="Deposit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="AccountType" class="control-label"></label>
                     <select asp-for="AccountType" asp-items="Model.AccountTypes"></select>
+                </div>
+                <div class="form-group">
                     <label asp-for="Amount" class="control-label"></label>
                     <input asp-for="Amount" class="form-control" value="@Model.Amount.ToString("0.00")"
                            data-val="true" data-val-number="The field Amount must be a number."
