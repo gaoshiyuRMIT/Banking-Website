@@ -51,6 +51,7 @@ namespace Banking.Models
                 TransactionType = TransactionType.ServiceCharge,
                 Amount = ServiceFee[TransactionType],
                 Comment = Comment + " service charge",
+                DestAccount = DestAccount,
                 ModifyDate = ModifyDate
             };
         }
