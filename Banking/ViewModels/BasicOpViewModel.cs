@@ -19,7 +19,19 @@ namespace Banking.ViewModels
     {
         private List<SelectListItem> _accountTypes = new List<SelectListItem>();
         private Account _account;
-        public Customer Customer { get; set; }
+        private AccountType _accountType;
+        private Customer _customer;
+
+        public Customer Customer {
+            get => _customer;
+            set
+            {
+                _customer = value;
+                // account & account type list needs to update
+                _accountTypes.Clear();
+                _account = null;
+            }
+        }
         public List<SelectListItem> AccountTypes {
             get {
                 if (_accountTypes.Count == 0 && Customer != null)
@@ -38,7 +50,15 @@ namespace Banking.ViewModels
             set => _accountTypes = AccountTypes;
         }
         // selected
-        public AccountType AccountType { get; set; }
+        public AccountType AccountType {
+            get => _accountType;
+            set
+            {
+                _accountType = value;
+                // account needs to update
+                _account = null;
+            }
+        }
         public Account Account
         {
             set => _account = value;
