@@ -117,9 +117,35 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Transfer()
+        public async Task<IActionResult> Transfer(TransferViewModel viewModel)
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            viewModel.Customer = customer;
+
+            viewModel.Validate(ModelState);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var account = viewModel.Account;
+            var destAccount = await _context.Account.FindAsync(viewModel.DestAccountNumber);
+
+            account.Balance -= viewModel.Amount;
+            destAccount.Balance += viewModel.Amount;
+            Transaction t = new Transaction
+            {
+                TransactionType = TransactionType.Transfer,
+                Amount = viewModel.Amount,
+                ModifyDate = DateTime.UtcNow
+            };
+            if (t.ShouldCharge)
+            {
+                int nShouldCharge = account.Transactions.Where(x => x.ShouldCharge).Count();
+                if (nShouldCharge > Transaction.NFreeTransaction)
+                    account.Transactions.Add(t.CreateServiceTransaction());
+            }
+            await _context.SaveChangesAsync();
+
+            return View(viewModel);
         }
 
         public IActionResult Statements()
