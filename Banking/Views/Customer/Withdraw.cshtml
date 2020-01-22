@@ -1,48 +1,28 @@
-﻿@model Account
+﻿@model WithdrawViewModel
 @{
     ViewData["Title"] = "Withdraw";
 }
-<h1 class="display-4">Account Number @Model.AccountNumber (@Model.AccountType)</h1>
-
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Withdraw">
-            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label for="Account Type" class="control-label"></label>
-                @{List<SelectListItem> listItems = new List<SelectListItem>();
-                    listItems.Add(new SelectListItem
-                    {
-                        Text = "Saving Account",
-                        Value = "SavingAccount"
-
-                    });
-                    listItems.Add(new SelectListItem
-                    {
-                        Text = "Checking Account",
-                        Value = "CheckingAccount"
-
-                    }); }
-                @Html.DropDownList("Account Type", listItems, new { @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label for="Amount" class="control-label"></label>
-                
-                <input id="Amount" name="Amount" class="form-control" value="@ViewBag.Amount?.ToString("0.00")"
+                <label asp-for="AccountType" class="control-label"></label>
+                <select asp-for="AccountType" asp-items="Model.AccountTypes"></select>
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" value="@Model.Amount.ToString("0.00")"
                        data-val="true" data-val-number="The field Amount must be a number."
                        data-val-required="The Amount field is required." />
                 @Html.ValidationMessage("Amount", new { @class = "text-danger" })
             </div>
             <div class="form-group">
-                <input type="submit" value="Cancel Withdraw" class="btn btn-primary"/>
-                 <input type="submit" value="Execute Withdraw" class="btn btn-primary"/>
-                
+                <input type="submit" value="Withdraw" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 <div>
-    <a asp-action="Index">Back to Accounts</a>
+    <a asp-action="Index">Cancel Withdraw</a>
 </div>
 
 @section Scripts {
