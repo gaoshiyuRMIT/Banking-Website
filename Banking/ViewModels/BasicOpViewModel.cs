@@ -10,8 +10,7 @@ namespace Banking.ViewModels
     public enum OperationStatus
     {
         Pending = 0,
-        Successful = 1,
-        Failed = 2
+        Successful = 1
     }
 
     public class BasicOpViewModel

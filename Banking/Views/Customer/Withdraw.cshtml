@@ -8,10 +8,6 @@
         {
             <span class="text-success">Operation is successful!</span>
         }
-        else if (Model.OperationStatus == OperationStatus.Failed)
-        {
-            <span class="text-danger">Operation failed!</span>
-        }
         <form asp-action="Withdraw">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

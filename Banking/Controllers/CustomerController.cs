@@ -54,7 +54,6 @@ namespace Banking.Controllers
             if (viewModel.Amount <= 0)
             {
                 ModelState.AddModelError("Amount", "Amount must be greater than zero.");
-                viewModel.OperationStatus = OperationStatus.Failed;
                 return View(viewModel);
             }
 
@@ -62,7 +61,6 @@ namespace Banking.Controllers
             if (viewModel.Amount > account.Balance)
             {
                 ModelState.AddModelError("Amount", "Amount exceeds current balance.");
-                viewModel.OperationStatus = OperationStatus.Failed;
                 return View(viewModel);
             }
 
@@ -99,7 +97,6 @@ namespace Banking.Controllers
             if (viewModel.Amount <= 0)
             {
                 ModelState.AddModelError("Amount", "Amount must be greater than zero.");
-                viewModel.OperationStatus = OperationStatus.Failed;
                 return View(viewModel);
             }
 
