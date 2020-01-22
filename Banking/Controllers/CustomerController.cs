@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 using Banking.Models;
 using Banking.ViewModels;
@@ -34,9 +35,14 @@ namespace Banking.Controllers
             return View(customer);
         }
 
-        public IActionResult Withdraw()
+        public async Task<IActionResult> Withdraw()
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            var viewModel = new WithdrawViewModel
+            {
+                Customer = customer
+            };
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Deposit()
@@ -46,6 +52,34 @@ namespace Banking.Controllers
             {
                 Customer = customer
             };
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Deposit(DepositViewModel viewModel)
+        {
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            viewModel.Customer = customer;
+
+            if (viewModel.Amount <= 0)
+            {
+                ModelState.AddModelError("Amount", "Amount must be greater than zero.");
+                viewModel.OperationStatus = OperationStatus.Failed;
+                return View(viewModel);
+            }
+
+            var account = customer.Accounts.Find(x => x.AccountType == viewModel.AccountType);
+
+            account.Balance += viewModel.Amount;
+            account.Transactions.Add(new Transaction
+            {
+                TransactionType = TransactionType.Deposit,
+                Amount = viewModel.Amount,
+                ModifyDate = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+
+            viewModel.OperationStatus = OperationStatus.Successful;
             return View(viewModel);
         }
 
