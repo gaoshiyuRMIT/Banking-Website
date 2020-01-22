@@ -60,38 +60,43 @@ namespace Banking.Data
                     PasswordHash = "LuiVJWbY4A3y1SilhMU5P00K54cGEvClx5Y+xWHq7VpyIUe5fe7m+WeI0iwid7GE"
                 });
 
+            const string format = "dd/MM/yyyy hh:mm:ss tt";
+
             context.Account.AddRange(
                 new Account
                 {
                     AccountNumber = 4100,
                     AccountType = AccountType.Savings,
                     CustomerID = 2100,
-                    Balance = 100
+                    Balance = 100,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 08:00:00 PM", format, null)
                 },
                 new Account
                 {
                     AccountNumber = 4101,
                     AccountType = AccountType.Checking,
                     CustomerID = 2100,
-                    Balance = 500
+                    Balance = 500,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 08:30:00 PM", format, null)
                 },
                 new Account
                 {
                     AccountNumber = 4200,
                     AccountType = AccountType.Savings,
                     CustomerID = 2200,
-                    Balance = 500.95m
+                    Balance = 500.95m,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 09:00:00 PM", format, null)
                 },
                 new Account
                 {
                     AccountNumber = 4300,
                     AccountType = AccountType.Checking,
                     CustomerID = 2300,
-                    Balance = 1250.50m
+                    Balance = 1250.50m,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 10:00:00 PM", format, null)
                 });
 
             const string openingBalance = "Opening balance";
-            const string format = "dd/MM/yyyy hh:mm:ss tt";
             context.Transaction.AddRange(
                 new Transaction
                 {

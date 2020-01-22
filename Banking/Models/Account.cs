@@ -13,6 +13,14 @@ namespace Banking.Models
 
     public class Account
     {
+        public decimal MinBalance {
+            get => AccountType == AccountType.Savings ? 0 : 200;
+        }
+        public decimal MinOpeningBalance
+        {
+            get => AccountType == AccountType.Savings ? 100 : 500;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int AccountNumber { get; set; }

@@ -45,6 +45,40 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Withdraw(WithdrawViewModel viewModel)
+        {
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            viewModel.Customer = customer;
+
+            viewModel.Validate(ModelState);
+
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var account = viewModel.Account;
+            account.Balance -= viewModel.Amount;
+            Transaction t = new Transaction
+            {
+                TransactionType = TransactionType.Withdrawal,
+                Amount = viewModel.Amount,
+                ModifyDate = DateTime.UtcNow
+            };
+            account.Transactions.Add(t);
+            // deals with service fee
+            if (t.ShouldCharge)
+            {
+                int nShouldCharge = account.Transactions.Where(x => x.ShouldCharge).Count();
+                if (nShouldCharge > Transaction.NFreeTransaction)
+                    account.Transactions.Add(t.CreateServiceTransaction());
+            }
+            await _context.SaveChangesAsync();
+
+            viewModel.OperationStatus = OperationStatus.Successful;
+            viewModel.Amount = 0;
+            return View(viewModel);
+        }
+
         public async Task<IActionResult> Deposit()
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
@@ -61,31 +95,59 @@ namespace Banking.Controllers
             var customer = await _context.Customer.FindAsync(CustomerID);
             viewModel.Customer = customer;
 
-            if (viewModel.Amount <= 0)
-            {
-                ModelState.AddModelError("Amount", "Amount must be greater than zero.");
-                viewModel.OperationStatus = OperationStatus.Failed;
-                return View(viewModel);
-            }
+            viewModel.Validate(ModelState);
 
-            var account = customer.Accounts.Find(x => x.AccountType == viewModel.AccountType);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var account = viewModel.Account;
 
             account.Balance += viewModel.Amount;
-            account.Transactions.Add(new Transaction
+            Transaction t = new Transaction
             {
                 TransactionType = TransactionType.Deposit,
                 Amount = viewModel.Amount,
                 ModifyDate = DateTime.UtcNow
-            });
+            };
+            account.Transactions.Add(t);
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
+            viewModel.Amount = 0;
             return View(viewModel);
         }
 
-        public IActionResult Transfer()
+        public async Task<IActionResult> Transfer(TransferViewModel viewModel)
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            viewModel.Customer = customer;
+            var destAccount = await _context.Account.FindAsync(viewModel.DestAccountNumber);
+            viewModel.DestAccount = destAccount;
+
+            viewModel.Validate(ModelState);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var account = viewModel.Account;
+
+            account.Balance -= viewModel.Amount;
+            destAccount.Balance += viewModel.Amount;
+            Transaction t = new Transaction
+            {
+                TransactionType = TransactionType.Transfer,
+                Amount = viewModel.Amount,
+                DestAccount = destAccount,
+                ModifyDate = DateTime.UtcNow
+            };
+            if (t.ShouldCharge)
+            {
+                int nShouldCharge = account.Transactions.Where(x => x.ShouldCharge).Count();
+                if (nShouldCharge > Transaction.NFreeTransaction)
+                    account.Transactions.Add(t.CreateServiceTransaction());
+            }
+            await _context.SaveChangesAsync();
+
+            return View(viewModel);
         }
 
         public IActionResult Statements()
