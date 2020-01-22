@@ -25,5 +25,6 @@
      <Folder Include="wwwroot\img\" />
      <Folder Include="ViewModels\" />
      <Folder Include="Attributes\" />
+     <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

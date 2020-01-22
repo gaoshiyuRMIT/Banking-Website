@@ -90,41 +90,41 @@ namespace Banking.Data
                     Balance = 1250.50m
                 });
 
-            //const string openingBalance = "Opening balance";
-            //const string format = "dd/MM/yyyy hh:mm:ss tt";
-            //context.Transactions.AddRange(
-            //    new Transaction
-            //    {
-            //        TransactionType = TransactionType.Deposit,
-            //        AccountNumber = 4100,
-            //        Amount = 100,
-            //        Comment = openingBalance,
-            //        TransactionTimeUtc = DateTime.ParseExact("19/12/2019 08:00:00 PM", format, null)
-            //    },
-            //    new Transaction
-            //    {
-            //        TransactionType = TransactionType.Deposit,
-            //        AccountNumber = 4101,
-            //        Amount = 500,
-            //        Comment = openingBalance,
-            //        TransactionTimeUtc = DateTime.ParseExact("19/12/2019 08:30:00 PM", format, null)
-            //    },
-            //    new Transaction
-            //    {
-            //        TransactionType = TransactionType.Deposit,
-            //        AccountNumber = 4200,
-            //        Amount = 500.95m,
-            //        Comment = openingBalance,
-            //        TransactionTimeUtc = DateTime.ParseExact("19/12/2019 09:00:00 PM", format, null)
-            //    },
-            //    new Transaction
-            //    {
-            //        TransactionType = TransactionType.Deposit,
-            //        AccountNumber = 4300,
-            //        Amount = 1250.50m,
-            //        Comment = "Opening balance",
-            //        TransactionTimeUtc = DateTime.ParseExact("19/12/2019 10:00:00 PM", format, null)
-            //    });
+            const string openingBalance = "Opening balance";
+            const string format = "dd/MM/yyyy hh:mm:ss tt";
+            context.Transaction.AddRange(
+                new Transaction
+                {
+                    TransactionType = TransactionType.Deposit,
+                    AccountNumber = 4100,
+                    Amount = 100,
+                    Comment = openingBalance,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 08:00:00 PM", format, null)
+                },
+                new Transaction
+                {
+                    TransactionType = TransactionType.Deposit,
+                    AccountNumber = 4101,
+                    Amount = 500,
+                    Comment = openingBalance,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 08:30:00 PM", format, null)
+                },
+                new Transaction
+                {
+                    TransactionType = TransactionType.Deposit,
+                    AccountNumber = 4200,
+                    Amount = 500.95m,
+                    Comment = openingBalance,
+                    ModifyDate = DateTime.ParseExact("19/12/2019 09:00:00 PM", format, null)
+                },
+                new Transaction
+                {
+                    TransactionType = TransactionType.Deposit,
+                    AccountNumber = 4300,
+                    Amount = 1250.50m,
+                    Comment = "Opening balance",
+                    ModifyDate = DateTime.ParseExact("19/12/2019 10:00:00 PM", format, null)
+                });
 
             context.SaveChanges();
         }

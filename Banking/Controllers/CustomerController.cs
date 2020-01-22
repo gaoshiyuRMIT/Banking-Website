@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Banking.Models;
+using Banking.ViewModels;
 using Banking.Data;
 using Banking.Attributes;
 
@@ -38,9 +39,14 @@ namespace Banking.Controllers
             return View();
         }
 
-        public IActionResult Deposit()
+        public async Task<IActionResult> Deposit()
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            var viewModel = new DepositViewModel
+            {
+                Customer = customer
+            };
+            return View(viewModel);
         }
 
         public IActionResult Transfer()

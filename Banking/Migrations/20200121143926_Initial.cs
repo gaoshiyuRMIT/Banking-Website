@@ -66,6 +66,36 @@ namespace Banking.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Transaction",
+                columns: table => new
+                {
+                    TransactionID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionType = table.Column<int>(nullable: false),
+                    AccountNumber = table.Column<int>(nullable: false),
+                    DestAccountNumber = table.Column<int>(nullable: true),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
+                    ModifyDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transaction", x => x.TransactionID);
+                    table.ForeignKey(
+                        name: "FK_Transaction_Account_AccountNumber",
+                        column: x => x.AccountNumber,
+                        principalTable: "Account",
+                        principalColumn: "AccountNumber",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transaction_Account_DestAccountNumber",
+                        column: x => x.DestAccountNumber,
+                        principalTable: "Account",
+                        principalColumn: "AccountNumber",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Account_CustomerID",
                 table: "Account",
@@ -75,15 +105,28 @@ namespace Banking.Migrations
                 name: "IX_Login_CustomerID",
                 table: "Login",
                 column: "CustomerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaction_AccountNumber",
+                table: "Transaction",
+                column: "AccountNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaction_DestAccountNumber",
+                table: "Transaction",
+                column: "DestAccountNumber");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Account");
+                name: "Login");
 
             migrationBuilder.DropTable(
-                name: "Login");
+                name: "Transaction");
+
+            migrationBuilder.DropTable(
+                name: "Account");
 
             migrationBuilder.DropTable(
                 name: "Customer");

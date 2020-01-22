@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace Banking.Models
 {
@@ -24,5 +24,7 @@ namespace Banking.Models
         public decimal Balance { get; set; }
 
         public DateTime ModifyDate { get; set; }
+
+        public virtual List<Transaction> Transactions { get; set; }
     }
 }
