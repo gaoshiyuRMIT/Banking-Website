@@ -47,7 +47,7 @@ namespace Banking.ViewModels
                 }
                 return _accountTypes;
             }
-            set => _accountTypes = AccountTypes;
+            set => _accountTypes = value;
         }
         // selected
         public AccountType AccountType {
