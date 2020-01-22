@@ -164,9 +164,14 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Statements()
+        public async Task<IActionResult> Statements()
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            var viewModel = new WithdrawViewModel
+            {
+                Customer = customer
+            };
+            return View(viewModel);
         }
 
         public IActionResult Profile()
