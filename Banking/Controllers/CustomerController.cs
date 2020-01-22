@@ -51,15 +51,12 @@ namespace Banking.Controllers
             var customer = await _context.Customer.FindAsync(CustomerID);
             viewModel.Customer = customer;
 
-            if (viewModel.Amount <= 0)
-                ModelState.AddModelError("Amount", "Amount must be greater than zero.");
+            viewModel.Validate(ModelState);
 
-            var account = customer.Accounts.Find(x => x.AccountType == viewModel.AccountType);
-            if (viewModel.Amount > account.Balance)
-                ModelState.AddModelError("Amount", "Amount exceeds current balance.");
             if (!ModelState.IsValid)
                 return View(viewModel);
 
+            var account = viewModel.Account;
             account.Balance -= viewModel.Amount;
             account.Transactions.Add(new Transaction
             {
@@ -90,13 +87,12 @@ namespace Banking.Controllers
             var customer = await _context.Customer.FindAsync(CustomerID);
             viewModel.Customer = customer;
 
-            if (viewModel.Amount <= 0)
-                ModelState.AddModelError("Amount", "Amount must be greater than zero.");
+            viewModel.Validate(ModelState);
 
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var account = customer.Accounts.Find(x => x.AccountType == viewModel.AccountType);
+            var account = viewModel.Account;
 
             account.Balance += viewModel.Amount;
             account.Transactions.Add(new Transaction
