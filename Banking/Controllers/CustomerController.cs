@@ -121,13 +121,14 @@ namespace Banking.Controllers
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
             viewModel.Customer = customer;
+            var destAccount = await _context.Account.FindAsync(viewModel.DestAccountNumber);
+            viewModel.DestAccount = destAccount;
 
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
 
             var account = viewModel.Account;
-            var destAccount = await _context.Account.FindAsync(viewModel.DestAccountNumber);
 
             account.Balance -= viewModel.Amount;
             destAccount.Balance += viewModel.Amount;
