@@ -27,4 +27,8 @@
      <Folder Include="Attributes\" />
      <Folder Include="Extensions\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Customer\Deposit.cshtml" />
+    <Content Remove="Views\Customer\Withdraw.cshtml" />
+  </ItemGroup>
 </Project>
