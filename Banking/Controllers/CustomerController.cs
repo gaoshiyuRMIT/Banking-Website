@@ -135,6 +135,7 @@ namespace Banking.Controllers
             {
                 TransactionType = TransactionType.Transfer,
                 Amount = viewModel.Amount,
+                DestAccount = destAccount,
                 ModifyDate = DateTime.UtcNow
             };
             if (t.ShouldCharge)
