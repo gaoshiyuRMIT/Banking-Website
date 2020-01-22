@@ -52,17 +52,13 @@ namespace Banking.Controllers
             viewModel.Customer = customer;
 
             if (viewModel.Amount <= 0)
-            {
                 ModelState.AddModelError("Amount", "Amount must be greater than zero.");
-                return View(viewModel);
-            }
 
             var account = customer.Accounts.Find(x => x.AccountType == viewModel.AccountType);
             if (viewModel.Amount > account.Balance)
-            {
                 ModelState.AddModelError("Amount", "Amount exceeds current balance.");
+            if (!ModelState.IsValid)
                 return View(viewModel);
-            }
 
             account.Balance -= viewModel.Amount;
             account.Transactions.Add(new Transaction
@@ -95,10 +91,10 @@ namespace Banking.Controllers
             viewModel.Customer = customer;
 
             if (viewModel.Amount <= 0)
-            {
                 ModelState.AddModelError("Amount", "Amount must be greater than zero.");
+
+            if (!ModelState.IsValid)
                 return View(viewModel);
-            }
 
             var account = customer.Accounts.Find(x => x.AccountType == viewModel.AccountType);
 
