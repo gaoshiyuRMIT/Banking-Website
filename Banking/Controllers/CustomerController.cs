@@ -34,9 +34,14 @@ namespace Banking.Controllers
             return View(customer);
         }
 
-        public IActionResult Withdraw()
+        public async Task<IActionResult> Withdraw()
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            var viewModel = new WithdrawViewModel
+            {
+                Customer = customer
+            };
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Deposit()
@@ -48,6 +53,10 @@ namespace Banking.Controllers
             };
             return View(viewModel);
         }
+
+        //public async Task<IActionResult> Deposit(DepositViewModel viewModel) {
+            
+        //}
 
         public IActionResult Transfer()
         {
