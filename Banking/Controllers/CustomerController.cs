@@ -58,12 +58,20 @@ namespace Banking.Controllers
 
             var account = viewModel.Account;
             account.Balance -= viewModel.Amount;
-            account.Transactions.Add(new Transaction
+            Transaction t = new Transaction
             {
-                TransactionType = TransactionType.Deposit,
+                TransactionType = TransactionType.Withdrawal,
                 Amount = viewModel.Amount,
                 ModifyDate = DateTime.UtcNow
-            });
+            };
+            account.Transactions.Add(t);
+            // deals with service fee
+            if (t.ShouldCharge)
+            {
+                int nShouldCharge = account.Transactions.Where(x => x.ShouldCharge).Count();
+                if (nShouldCharge > Transaction.NFreeTransaction)
+                    account.Transactions.Add(t.CreateServiceTransaction());
+            }
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
@@ -95,12 +103,13 @@ namespace Banking.Controllers
             var account = viewModel.Account;
 
             account.Balance += viewModel.Amount;
-            account.Transactions.Add(new Transaction
+            Transaction t = new Transaction
             {
                 TransactionType = TransactionType.Deposit,
                 Amount = viewModel.Amount,
                 ModifyDate = DateTime.UtcNow
-            });
+            };
+            account.Transactions.Add(t);
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;

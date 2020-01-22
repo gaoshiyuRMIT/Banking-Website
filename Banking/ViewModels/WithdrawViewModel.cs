@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+using Banking.Models;
+using Banking.Extensions;
 
 namespace Banking.ViewModels
 {
@@ -8,8 +12,10 @@ namespace Banking.ViewModels
         public override void Validate(ModelStateDictionary modelState)
         {
             base.Validate(modelState);
-            if (Amount > Account.Balance)
-                modelState.AddModelError("Amount", "Amount exceeds current balance.");
+
+            if (Account.Balance - Amount < Account.MinBalance)
+                modelState.AddModelError("Amount",
+                    "balance would be lower than the allowed minimum after deduction.");
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +16,18 @@ namespace Banking.Models
 
     public class Transaction
     {
+        public const int NFreeTransaction = 4;
+        public static readonly Dictionary<TransactionType, decimal> ServiceFee =
+            new Dictionary<TransactionType, decimal>
+            {
+                [TransactionType.Withdrawal] = 0.1M,
+                [TransactionType.Transfer] = 0.2M
+            };
+        public bool ShouldCharge {
+            get => TransactionType == TransactionType.Transfer
+                || TransactionType == TransactionType.Withdrawal;
+        }
+
         public int TransactionID { get; set; }
         public TransactionType TransactionType { get; set; }
 
@@ -29,5 +41,18 @@ namespace Banking.Models
         public string Comment { get; set; }
 
         public DateTime ModifyDate { get; set; }
+
+        public Transaction CreateServiceTransaction()
+        {
+            if (!ShouldCharge)
+                return null;
+            return new Transaction
+            {
+                TransactionType = TransactionType.ServiceCharge,
+                Amount = ServiceFee[TransactionType],
+                Comment = Comment + " service charge",
+                ModifyDate = ModifyDate
+            };
+        }
     }
 }
