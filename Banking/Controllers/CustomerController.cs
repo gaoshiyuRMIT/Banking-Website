@@ -11,6 +11,8 @@ using Banking.ViewModels;
 using Banking.Data;
 using Banking.Attributes;
 
+using X.PagedList;
+
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Banking.Controllers
@@ -171,6 +173,26 @@ namespace Banking.Controllers
             {
                 Customer = customer
             };
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> Statements(StatementsViewModel viewModel)
+        {
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            viewModel.Customer = customer;
+
+            viewModel.Validate(ModelState);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            const int pageSize = 4;
+            var transactions = viewModel.Account.Transactions
+                .OrderByDescending<Transaction, DateTime>(x => x.ModifyDate);
+            var pagedList = await transactions.AsQueryable<Transaction>()
+                .ToPagedListAsync<Transaction>(viewModel.Page, pageSize);
+
+            viewModel.Transactions = pagedList;
+
             return View(viewModel);
         }
 
