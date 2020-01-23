@@ -158,6 +158,9 @@ namespace Banking.Controllers
             }
             await _context.SaveChangesAsync();
 
+            viewModel.OperationStatus = OperationStatus.Successful;
+            viewModel.Amount = 0;
+            viewModel.DestAccountNumber = 0;
             return View(viewModel);
         }
 
