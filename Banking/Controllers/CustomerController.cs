@@ -117,6 +117,17 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> Transfer()
+        {
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            var viewModel = new WithdrawViewModel
+            {
+                Customer = customer
+            };
+            return View(viewModel);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Transfer(TransferViewModel viewModel)
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
