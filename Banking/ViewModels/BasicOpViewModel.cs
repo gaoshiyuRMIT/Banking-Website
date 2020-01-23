@@ -9,12 +9,6 @@ using Banking.Models;
 
 namespace Banking.ViewModels
 {
-    public enum OperationStatus
-    {
-        Pending = 0,
-        Successful = 1
-    }
-
     public class BasicOpViewModel
     {
         private List<SelectListItem> _accountTypes = new List<SelectListItem>();
@@ -71,15 +65,9 @@ namespace Banking.ViewModels
                 return _account;
             }
         }
-        public decimal Amount { get; set; }
-        public string Comment { get; set; }
-        public OperationStatus OperationStatus { get; set; }
-            = OperationStatus.Pending;
 
         public virtual void Validate(ModelStateDictionary modelState)
         {
-            if (Amount <= 0)
-                modelState.AddModelError("Amount", "Amount must be greater than zero.");
         }
     }
 }

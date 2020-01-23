@@ -7,7 +7,7 @@ using Banking.Extensions;
 
 namespace Banking.ViewModels
 {
-    public class WithdrawViewModel : BasicOpViewModel
+    public class WithdrawViewModel : UpdateOpViewModel
     {
         public override void Validate(ModelStateDictionary modelState)
         {
