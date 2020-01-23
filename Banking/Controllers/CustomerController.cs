@@ -20,6 +20,7 @@ namespace Banking.Controllers
     [AuthorizeCustomer]
     public class CustomerController : Controller
     {
+        private const string statementsResultSessionKey = "StatementsResultAccountNumber";
         private readonly BankingContext _context;
 
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
@@ -169,7 +170,7 @@ namespace Banking.Controllers
         public async Task<IActionResult> Statements()
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
-            var viewModel = new StatementsViewModel
+            var viewModel = new BasicOpViewModel
             {
                 Customer = customer
             };
@@ -177,7 +178,7 @@ namespace Banking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Statements(StatementsViewModel viewModel)
+        public async Task<IActionResult> Statements(BasicOpViewModel viewModel)
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
             viewModel.Customer = customer;
@@ -186,16 +187,27 @@ namespace Banking.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
+            HttpContext.Session.SetInt32(statementsResultSessionKey, viewModel.Account.AccountNumber);
+
+            return RedirectToAction("StatementsResult");
+        }
+
+        public async Task<IActionResult> StatementsResult(int? page = 1)
+        {
+            int? accountNumber = HttpContext.Session.GetInt32(statementsResultSessionKey);
+            if (accountNumber == null)
+                return RedirectToAction("Statements");
+            var account = await _context.Account.FindAsync(accountNumber);
+
             const int pageSize = 4;
             var transactions = _context.Transaction
-                .Where(x => x.AccountNumber == viewModel.Account.AccountNumber)
+                .Where(x => x.AccountNumber == accountNumber)
                 .OrderByDescending<Transaction, DateTime>(x => x.ModifyDate);
             var pagedList = await transactions
-                .ToPagedListAsync<Transaction>(viewModel.Page, pageSize);
+                .ToPagedListAsync<Transaction>(page, pageSize);
 
-            viewModel.Transactions = pagedList;
-
-            return View(viewModel);
+            return View(new StatementsResultViewModel {
+                Transactions = pagedList, Account = account });
         }
 
         public async Task<IActionResult> Profile()
