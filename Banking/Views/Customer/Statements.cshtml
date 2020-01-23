@@ -1,27 +1,60 @@
-﻿@model StatementsViewModel
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+@model StatementsViewModel
 @{
     ViewData["Title"] = "Statements";
 }
 
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Statement">
+            <h2>Statements</h2>
+            <form asp-action="Statements">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="AccountType" class="control-label"></label>
-                    <span>@Model.AccountType</span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Account.Balance" class="control-label"></label>
-                    <span>@Model.Account.Balance</span>
+                    <select asp-for="AccountType" asp-items="Model.AccountTypes"></select>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Transactions" class="control-label"></label>
-                    <span>@Model.Transactions</span>
+                    <input type="submit" value="View Statements" class="btn btn-primary" />
                 </div>
             </form>
-        </div>
-    </div>
+            @if (Model.Transactions != null)
+            {
 
-   
+                <table class="table">
+                    <tr>
+                        <th>@Html.DisplayNameFor(x => x.Account.Balance)</th>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions)</th>
+                    </tr>
+
+                    @foreach (var item in Model.Transactions)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(x => item.TransactionType)</td>
+
+                            <td>@Html.DisplayFor(x => item.Amount)</td>
+                        </tr>
+                    }
+                </table>
+
+
+                
+                @Html.PagedListPager(Model.Transactions, page => Url.Action("Statemens", new { page }),
+                               new PagedListRenderOptions
+                               {
+                                   LiElementClasses = new[] { "page-item" },
+                                   PageClasses = new[] { "page-link" }
+                               })
+            }
+        </div> 
+
+            <div>
+                <a asp-action="Index">Back to Customers</a>
+            </div>
+
+        </div>
+       
+

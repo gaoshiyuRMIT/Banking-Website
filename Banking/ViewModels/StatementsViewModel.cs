@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using X.PagedList;
 
@@ -10,5 +10,6 @@ namespace Banking.ViewModels
     {
         public IPagedList<Transaction> Transactions { get; set; }
         public int? Page { get; set; } = 1;
+       
     }
 }
