@@ -176,6 +176,7 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Statements(StatementsViewModel viewModel)
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
