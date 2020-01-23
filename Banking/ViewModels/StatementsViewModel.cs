@@ -9,5 +9,6 @@ namespace Banking.ViewModels
     public class StatementsViewModel : BasicOpViewModel
     {
         public IPagedList<Transaction> Transactions { get; set; }
+        public int? Page { get; set; } = 1;
     }
 }
