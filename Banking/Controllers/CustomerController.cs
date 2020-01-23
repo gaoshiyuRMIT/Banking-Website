@@ -186,9 +186,10 @@ namespace Banking.Controllers
                 return View(viewModel);
 
             const int pageSize = 4;
-            var transactions = viewModel.Account.Transactions
+            var transactions = _context.Transaction
+                .Where(x => x.AccountNumber == viewModel.Account.AccountNumber)
                 .OrderByDescending<Transaction, DateTime>(x => x.ModifyDate);
-            var pagedList = await transactions.AsQueryable<Transaction>()
+            var pagedList = await transactions
                 .ToPagedListAsync<Transaction>(viewModel.Page, pageSize);
 
             viewModel.Transactions = pagedList;
