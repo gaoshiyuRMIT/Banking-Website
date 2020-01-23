@@ -197,9 +197,25 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            var customer = await _context.Customer.FindAsync(CustomerID);
+
+            return View(customer);
+        }
+
+        [HttpPost]
+        [Route("Profile/Edit")]
+        public async Task<IActionResult> ProfileEdit(
+            [Bind("Name,TFN,Address,City,State,PostCode,Phone")] Customer customer)
+        {
+            if (!ModelState.IsValid)
+                return View(customer);
+
+            customer.CustomerID = CustomerID;
+            _context.Update(customer);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Profile", customer);
         }
     }
 }
