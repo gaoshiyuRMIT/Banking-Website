@@ -24,7 +24,7 @@ namespace Banking.ViewModels
                 modelState.AddModelError("DestAccountNumber",
                     "Cannot transfer from and to the same account.");
             if (DestAccount == null)
-                modelState.AddModelError("DestAccountNumbe",
+                modelState.AddModelError("DestAccountNumber",
                     "The provided destination account number is invalid.");
         }
 
