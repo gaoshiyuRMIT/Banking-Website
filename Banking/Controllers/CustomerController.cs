@@ -120,7 +120,7 @@ namespace Banking.Controllers
         public async Task<IActionResult> Transfer()
         {
             var customer = await _context.Customer.FindAsync(CustomerID);
-            var viewModel = new WithdrawViewModel
+            var viewModel = new TransferViewModel
             {
                 Customer = customer
             };
