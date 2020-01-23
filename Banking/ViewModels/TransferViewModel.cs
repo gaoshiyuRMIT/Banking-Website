@@ -7,7 +7,7 @@ using Banking.Models;
 
 namespace Banking.ViewModels
 {
-    public class TransferViewModel : BasicOpViewModel
+    public class TransferViewModel : UpdateOpViewModel
     {
         [Range(0, 9999,
             ErrorMessage="account number is 4 digits long")]
