@@ -217,6 +217,13 @@ namespace Banking.Controllers
             return View(customer);
         }
 
+        [Route("Profile/Edit")]
+        public async Task<IActionResult> ProfileEdit()
+        {
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            return View(customer);
+        }
+
         [HttpPost]
         [Route("Profile/Edit")]
         public async Task<IActionResult> ProfileEdit(
