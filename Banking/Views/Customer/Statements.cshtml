@@ -18,36 +18,58 @@
                 <div class="form-group">
                     <input type="submit" value="View Statements" class="btn btn-primary" />
                 </div>
+
             </form>
             @if (Model.Transactions != null)
             {
+                <div>
+                    <label asp-for="Account.Balance " class="control-label"></label>
 
+                    <span>
+                        @Model.Account.Balance
+                    </span>
+                </div>
                 <table class="table">
+                    
                     <tr>
-                        <th>@Html.DisplayNameFor(x => x.Account.Balance)</th>
-                    </tr>
-                    <tr>
-                        <th>@Html.DisplayNameFor(x => x.Account.Transactions)</th>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].TransactionID)</th>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].TransactionType)</th>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].Amount)</th>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].ModifyDate)</th>
+
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].AccountNumber)</th>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].DestAccountNumber)</th>
+                        <th>@Html.DisplayNameFor(x => x.Account.Transactions[0].Comment)</th>
                     </tr>
 
                     @foreach (var item in Model.Transactions)
                     {
                         <tr>
+                            <td>@Html.DisplayFor(x => item.TransactionID)</td>
+
                             <td>@Html.DisplayFor(x => item.TransactionType)</td>
 
                             <td>@Html.DisplayFor(x => item.Amount)</td>
+
+                            <td>@Html.DisplayFor(x => item.ModifyDate)</td>
+
+                            <td>@Html.DisplayFor(x => item.AccountNumber)</td>
+
+                            <td>@Html.DisplayFor(x => item.DestAccountNumber)</td>
+
+                            <td>@Html.DisplayFor(x => item.Comment)</td>
                         </tr>
                     }
                 </table>
 
 
-                
+
                 @Html.PagedListPager(Model.Transactions, page => Url.Action("Statemens", new { page }),
-                               new PagedListRenderOptions
-                               {
-                                   LiElementClasses = new[] { "page-item" },
-                                   PageClasses = new[] { "page-link" }
-                               })
+                                    new PagedListRenderOptions
+                                    {
+                                        LiElementClasses = new[] { "page-item" },
+                                        PageClasses = new[] { "page-link" }
+                                    })
             }
         </div> 
 
