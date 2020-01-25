@@ -15,6 +15,18 @@ namespace Banking.Models
         public string State { get; set; }
         public string PostCode { get; set; }
         public string Phone { get; set; }
-    
+
+        public string PayeeIDStr => PayeeID.ToString().PadLeft(4, '0');
+
+        public override bool Equals(object obj)
+        {
+            Payee other = obj as Payee;
+            return other != null && other.PayeeID == PayeeID;
+        }
+
+        public override int GetHashCode()
+        {
+            return PayeeID;
+        }
     }
 }

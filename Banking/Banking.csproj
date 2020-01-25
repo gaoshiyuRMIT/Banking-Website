@@ -27,5 +27,6 @@
      <Folder Include="ViewModels\" />
      <Folder Include="Attributes\" />
      <Folder Include="Extensions\" />
+     <Folder Include="Views\BillPay\" />
   </ItemGroup>
 </Project>
