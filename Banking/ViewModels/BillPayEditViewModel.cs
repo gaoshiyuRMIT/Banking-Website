@@ -22,6 +22,7 @@ namespace Banking.ViewModels
 
     public class BillPayEditViewModel : UpdateOpViewModel
     {
+        private DateTime _scheduleDate;
         public BillPayPeriod Period { get; set; }
         public List<SelectListItem> PeriodSelect
         {
@@ -40,8 +41,16 @@ namespace Banking.ViewModels
                 return select;
             }
         }
-        public DateTime ScheduleDateLocal { get; set; }
-        public DateTime ScheduleDate => ScheduleDateLocal.ToUniversalTime();
+        public DateTime ScheduleDateLocal
+        {
+            get => _scheduleDate.ToLocalTime();
+            set => _scheduleDate = DateTime.SpecifyKind(value, DateTimeKind.Local);
+        }
+        public DateTime ScheduleDate
+        {
+            get => _scheduleDate;
+            set => _scheduleDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+        }
         public Payee Payee { get; set; }
 
         public override void Validate(ModelStateDictionary modelState)
