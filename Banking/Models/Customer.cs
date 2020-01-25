@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,5 +20,16 @@ namespace Banking.Models
         public string Phone { get; set; }
 
         public virtual List<Account> Accounts { get; set; }
+        public IEnumerable<Payee> PayeeHistory
+        {
+            get
+            {
+                List<Payee> payees = new List<Payee>();
+                Accounts.ForEach(a =>
+                    a.BillPays.ForEach(bp =>
+                        payees.Add(bp.Payee)));
+                return payees.Distinct<Payee>();
+            }
+        }
     }
 }
