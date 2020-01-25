@@ -1,5 +1,63 @@
 ﻿@model IEnumerable<BillPay>
 
+
 @{
     ViewData["Title"] = "Bill Pay";
 }
+<div class="row">
+    <div class="col-md-4">
+        <h2>Bill Pay</h2>
+        <div>
+            <h2 class="display-4">Bill Pay</h2>
+        </div>
+
+        <form asp-action="BillPay">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <h3>Please Choose Your Accounts</h3>
+                <!--create drop-down box for choose account type-->
+                @{List<SelectListItem> listItems = new List<SelectListItem>();
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Saving Account",
+                        Value = "SavingAccount"
+
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Checking Account",
+                        Value = "CheckingAccount"
+
+                    }); }
+                @Html.DropDownList("Choose Your Account", listItems, new { @class = "form-control" })
+            </div>
+            @* <div class="form-group">
+
+
+
+                            <label asp-for="ToPayee" class="control-label"></label>
+                            <input asp-for="ToPayee" class="form-control" />
+                            <span asp-validation-for="ToPayee" class="text-danger"></span>
+                                <select asp-for="ToPayee" asp-items="Model.BillPayEditOp"></select>
+                    </div>
+                                    <div class="form-group">
+
+
+            </div>*@
+        </form>
+
+
+        <a class="btn btn-primary" asp-action="Edit">Edit</a>
+
+        <a class="btn btn-primary" asp-action="Create">Create</a>
+
+    </div>
+</div>
+
+
+
+    
+<div>
+    <a asp-action="Index">Back to Billpay</a>
+
+</div>
