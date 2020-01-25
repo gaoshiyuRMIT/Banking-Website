@@ -130,6 +130,29 @@ namespace Banking.Data
                     Comment = "Opening balance",
                     ModifyDate = DateTime.ParseExact("19/12/2019 10:00:00 PM", format, null)
                 });
+            context.Payee.AddRange(
+                new Payee
+                {
+                    PayeeID = 1100,
+                    Name = "Jane Doe",
+                    Address = "789 Fake St",
+                    City = "Warrnambool",
+                    State = "VIC",
+                    PostCode = "3280",
+                    Phone = "411111111"
+                }
+            );
+            context.BillPay.AddRange(
+                new BillPay
+                {
+                    BillPayID = 2100,
+                    AccountNumber = 4100,
+                    PayeeID = 1100,
+                    Amount = 10,
+                    ScheduleDate = DateTime.ParseExact("19/12/2019 10:00:00 PM", format, null),
+                    Period = BillPayPeriod.Monthly
+                }
+            );
 
             context.SaveChanges();
         }
