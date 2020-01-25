@@ -28,18 +28,36 @@ namespace Banking.Models
                 || TransactionType == TransactionType.Withdrawal;
         }
 
+        [Range(0, 9999, ErrorMessage = "No such account")]
+        [Required(AllowEmptyStrings = false)]
         public int TransactionID { get; set; }
+
+
+        [Required(AllowEmptyStrings = false)]
         public TransactionType TransactionType { get; set; }
 
+        [Range(0, 9999, ErrorMessage = "No such account")]
+        [Required(AllowEmptyStrings = false)]
         public int AccountNumber { get; set; }
         public virtual Account Account { get; set; }
 
+
+        [Range(0, 9999, ErrorMessage = "No such account")]
         public int? DestAccountNumber { get; set; }
         public virtual Account DestAccount { get; set; }
 
+
+        [DataType(DataType.Currency)]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public decimal Amount { get; set; }
+
+
+        [StringLength(255, ErrorMessage = "Please enter 255 characters")]
         public string Comment { get; set; }
 
+
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime ModifyDate { get; set; }
 
         public Transaction CreateServiceTransaction()
