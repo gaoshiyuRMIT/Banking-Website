@@ -26,6 +26,7 @@ namespace Banking.Models
     public class BillPaySessionKey : SessionKeyBase
     {
         public static string EditOrCreate = "BillPayEditOrCreateViewModel";
+        public static string EditBillPayID = "BillPayEditBillPayID";
 
         public static BillPayEditViewModel GetEditViewModelFromSession(ISession session)
         {
