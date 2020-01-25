@@ -47,7 +47,7 @@ namespace Banking.Controllers
             var payee = await _context.Payee.FindAsync(payeeID);
 
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-            viewModel.Payee = payee;
+            viewModel.PayeeID = payeeID;
             BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
 
             if (viewModel.BillPayEditOp == BillPayEditOp.Create)
@@ -61,9 +61,10 @@ namespace Banking.Controllers
         public async Task<IActionResult> Create([Bind("Name,Address,City,State,PostCode,Phone")] Payee payee)
         {
             await _context.Payee.AddAsync(payee);
+            await _context.SaveChangesAsync();
 
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-            viewModel.Payee = payee;
+            viewModel.PayeeID = payee.PayeeID;
             BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
 
             if (viewModel.BillPayEditOp == BillPayEditOp.Create)

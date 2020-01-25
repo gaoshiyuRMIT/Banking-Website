@@ -23,6 +23,7 @@ namespace Banking.ViewModels
     public class BillPayEditViewModel : UpdateOpViewModel
     {
         private DateTime _scheduleDate;
+
         public BillPayPeriod Period { get; set; }
         public List<SelectListItem> PeriodSelect
         {
@@ -51,7 +52,9 @@ namespace Banking.ViewModels
             get => _scheduleDate;
             set => _scheduleDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
         }
-        public Payee Payee { get; set; }
+        public int PayeeID { get; set; }
+        public BillPayEditOp BillPayEditOp { get; set; }
+        public PayeeOp PayeeOp { get; set; }
 
         public override void Validate(ModelStateDictionary modelState)
         {
@@ -59,9 +62,7 @@ namespace Banking.ViewModels
 
             if (ScheduleDate <= DateTime.UtcNow)
                 modelState.AddModelError("ScheduleDateLocal",
-                    "Schedule date must be in the future.");
+                    "Schedule date must be in the future."); 
         }
-        public BillPayEditOp BillPayEditOp { get; set; }
-        public PayeeOp PayeeOp { get; set; }
     }
 }
