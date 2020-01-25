@@ -11,6 +11,8 @@ namespace Banking.Models
         public static T GetFromSession<T>(ISession session, string key)
         {
             string json = session.GetString(key);
+            if (string.IsNullOrEmpty(json))
+                return default(T);
             return JsonConvert.DeserializeObject<T>(json);
         }
 
