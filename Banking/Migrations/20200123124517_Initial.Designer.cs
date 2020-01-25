@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Banking.Migrations
 {
     [DbContext(typeof(BankingContext))]
-    [Migration("20200121143926_Initial")]
+    [Migration("20200123124517_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,40 @@ namespace Banking.Migrations
                     b.HasIndex("CustomerID");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("Banking.Models.BillPay", b =>
+                {
+                    b.Property<int>("BillPayID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ModifyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PayeeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Period")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ScheduleDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BillPayID");
+
+                    b.HasIndex("AccountNumber");
+
+                    b.HasIndex("PayeeID");
+
+                    b.ToTable("BillPay");
                 });
 
             modelBuilder.Entity("Banking.Models.Customer", b =>
@@ -100,6 +134,37 @@ namespace Banking.Migrations
                     b.ToTable("Login");
                 });
 
+            modelBuilder.Entity("Banking.Models.Payee", b =>
+                {
+                    b.Property<int>("PayeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PayeeID");
+
+                    b.ToTable("Payee");
+                });
+
             modelBuilder.Entity("Banking.Models.Transaction", b =>
                 {
                     b.Property<int>("TransactionID")
@@ -139,6 +204,21 @@ namespace Banking.Migrations
                     b.HasOne("Banking.Models.Customer", "Customer")
                         .WithMany("Accounts")
                         .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Banking.Models.BillPay", b =>
+                {
+                    b.HasOne("Banking.Models.Account", "Account")
+                        .WithMany("BillPays")
+                        .HasForeignKey("AccountNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Banking.Models.Payee", "Payee")
+                        .WithMany()
+                        .HasForeignKey("PayeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

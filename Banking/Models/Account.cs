@@ -34,5 +34,6 @@ namespace Banking.Models
         public DateTime ModifyDate { get; set; }
 
         public virtual List<Transaction> Transactions { get; set; }
+        public virtual List<BillPay> BillPays { get; set; }
     }
 }

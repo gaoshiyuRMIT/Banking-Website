@@ -26,6 +26,24 @@ namespace Banking.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payee",
+                columns: table => new
+                {
+                    PayeeID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    PostCode = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payee", x => x.PayeeID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Account",
                 columns: table => new
                 {
@@ -67,6 +85,36 @@ namespace Banking.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BillPay",
+                columns: table => new
+                {
+                    BillPayID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<int>(nullable: false),
+                    PayeeID = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    ScheduleDate = table.Column<DateTime>(nullable: false),
+                    Period = table.Column<int>(nullable: false),
+                    ModifyDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BillPay", x => x.BillPayID);
+                    table.ForeignKey(
+                        name: "FK_BillPay_Account_AccountNumber",
+                        column: x => x.AccountNumber,
+                        principalTable: "Account",
+                        principalColumn: "AccountNumber",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BillPay_Payee_PayeeID",
+                        column: x => x.PayeeID,
+                        principalTable: "Payee",
+                        principalColumn: "PayeeID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transaction",
                 columns: table => new
                 {
@@ -102,6 +150,16 @@ namespace Banking.Migrations
                 column: "CustomerID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BillPay_AccountNumber",
+                table: "BillPay",
+                column: "AccountNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BillPay_PayeeID",
+                table: "BillPay",
+                column: "PayeeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Login_CustomerID",
                 table: "Login",
                 column: "CustomerID");
@@ -120,10 +178,16 @@ namespace Banking.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BillPay");
+
+            migrationBuilder.DropTable(
                 name: "Login");
 
             migrationBuilder.DropTable(
                 name: "Transaction");
+
+            migrationBuilder.DropTable(
+                name: "Payee");
 
             migrationBuilder.DropTable(
                 name: "Account");
