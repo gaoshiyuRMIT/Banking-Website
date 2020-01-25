@@ -20,16 +20,5 @@ namespace Banking.Models
         public string Phone { get; set; }
 
         public virtual List<Account> Accounts { get; set; }
-        public IEnumerable<Payee> PayeeHistory
-        {
-            get
-            {
-                List<Payee> payees = new List<Payee>();
-                Accounts.ForEach(a =>
-                    a.BillPays.ForEach(bp =>
-                        payees.Add(bp.Payee)));
-                return payees.Distinct<Payee>();
-            }
-        }
     }
 }
