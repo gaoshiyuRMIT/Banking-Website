@@ -11,8 +11,9 @@ namespace Banking.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
 
+        [Display(Name = "Customer ID")]
         [Range(0, 9999, ErrorMessage = "Please enter 4 characters")]
-        [Required(AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Not Allow Null")]
         public int CustomerID { get; set; }
 
         [StringLength(50, ErrorMessage = "Please enter 50 characters")]
@@ -34,6 +35,7 @@ namespace Banking.Models
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only  letter allowed.")]
         public string State { get; set; }
 
+        [Display(Name = "Post Code")]
         //[Range(0, 10, ErrorMessage = "Please enter less than 10 characters")]
         [StringLength(4, ErrorMessage = "Please enter 4 digit number")]
         [RegularExpression(@"^\d{4}", ErrorMessage = "Only  Numbers allowed.")]

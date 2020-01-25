@@ -28,20 +28,24 @@ namespace Banking.Models
                 || TransactionType == TransactionType.Withdrawal;
         }
 
+        [Display(Name = "Transaction ID")]
         [Range(0, 9999, ErrorMessage = "No such account")]
-        [Required(AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Not Allow Null")]
         public int TransactionID { get; set; }
 
-
+        [Display(Name = "Transaction Type")]
         [Required(AllowEmptyStrings = false)]
         public TransactionType TransactionType { get; set; }
 
+
+        [Display(Name = "Account Number")]
         [Range(0, 9999, ErrorMessage = "No such account")]
-        [Required(AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Not Allow Null")]
         public int AccountNumber { get; set; }
         public virtual Account Account { get; set; }
 
 
+        [Display(Name = "Dest Account Number")]
         [Range(0, 9999, ErrorMessage = "No such account")]
         public int? DestAccountNumber { get; set; }
         public virtual Account DestAccount { get; set; }
@@ -56,7 +60,7 @@ namespace Banking.Models
         public string Comment { get; set; }
 
 
-
+        [Display(Name = "Modify Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime ModifyDate { get; set; }
 

@@ -24,21 +24,25 @@ namespace Banking.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
 
-        [Range(0,9999, ErrorMessage = "No such account")]
-        [Required(AllowEmptyStrings = false)]
+        [Display(Name ="Account Number")]
+        [Range(0,9999, ErrorMessage = "No more than 4")]
+        [Required(ErrorMessage = "Not Allow Null")]
         public int AccountNumber { get; set; }
 
-
+        [Display(Name = "Account Type")]
         public AccountType AccountType { get; set; }
 
+
+        [Display(Name = "Customer ID")]
         [Range(0,9999, ErrorMessage = "No such Customer")]
-        [Required(AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Not Allow Null")]
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
 
         public decimal Balance { get; set; }
 
+        [Display(Name = "Modify Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [Required(AllowEmptyStrings = false)]
         public DateTime ModifyDate { get; set; }

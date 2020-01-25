@@ -17,11 +17,13 @@ namespace Banking.Models
         [Required, StringLength(64)]
         public string PasswordHash { get; set; }
 
+        [Display(Name = "Customer ID")]
         [StringLength(4)]
-        [Required(AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Not Allow Null")]
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
+        [Display(Name = "Modify Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         [Required(AllowEmptyStrings = false)]
         public DateTime ModifyDate { get; set; }
