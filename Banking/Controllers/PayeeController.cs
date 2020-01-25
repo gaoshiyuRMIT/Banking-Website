@@ -55,8 +55,10 @@ namespace Banking.Controllers
             return RedirectToAction("Edit", "BillPay");
         }
 
+        [Route("Create")]
         public IActionResult Create() => View();
 
+        [Route("Create")]
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Name,Address,City,State,PostCode,Phone")] Payee payee)
         {

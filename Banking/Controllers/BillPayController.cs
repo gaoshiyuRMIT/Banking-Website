@@ -36,6 +36,7 @@ namespace Banking.Controllers
             return View(billPays);
         }
 
+        [Route("Edit")]
         public async Task<IActionResult> Edit(int billPayId)
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
@@ -59,6 +60,7 @@ namespace Banking.Controllers
             return View(viewModel);
         }
 
+        [Route("Create")]
         public IActionResult Create()
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
@@ -71,6 +73,7 @@ namespace Banking.Controllers
             });
         }
 
+        [Route("EditOrCreateToPayee")]
         [HttpPost]
         public IActionResult EditOrCreateToPayee(BillPayEditViewModel viewModel)
         {
@@ -81,6 +84,7 @@ namespace Banking.Controllers
             return RedirectToAction("Create", "Payee");
         }
 
+        [Route("Edit")]
         [HttpPost]
         public async Task<IActionResult> Edit(BillPayEditViewModel viewModel)
         {
@@ -113,6 +117,7 @@ namespace Banking.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("Create")]
         [HttpPost]
         public async Task<IActionResult> Create(BillPayEditViewModel viewModel)
         {
