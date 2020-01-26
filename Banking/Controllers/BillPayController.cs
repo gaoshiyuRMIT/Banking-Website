@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+
 
 using Banking.Attributes;
 using Banking.Data;
@@ -28,8 +30,13 @@ namespace Banking.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public IActionResult Index(int discard = 0)
         {
+            if (discard == 1)
+            {
+                HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
+                HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
+            }
             IEnumerable<BillPay> billPays = _context.BillPay
                 .Where(x => x.Account.CustomerID == CustomerID)
                 .OrderBy<BillPay, DateTime>(x => x.ScheduleDate);
@@ -40,37 +47,53 @@ namespace Banking.Controllers
         public async Task<IActionResult> Edit(int billPayId)
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-            if (viewModel != null)
-                return View(viewModel);
 
-            var billPay = await _context.BillPay.FindAsync(billPayId);
-
-            if (billPay == null)
-                return NotFound();
-
-            HttpContext.Session.SetInt32(BillPaySessionKey.EditBillPayID, billPayId);
-
-            viewModel = new BillPayEditViewModel
+            if (viewModel == null)
             {
-                AccountType = billPay.Account.AccountType,
-                ScheduleDateLocal = billPay.ScheduleDate.ToLocalTime(),
-                Period = billPay.Period,
-                BillPayEditOp = BillPayEditOp.Edit
-            };
+                var billPay = await _context.BillPay.FindAsync(billPayId);
+
+                if (billPay == null)
+                    return NotFound();
+
+                viewModel = new BillPayEditViewModel
+                {
+                    AccountType = billPay.Account.AccountType,
+                    ScheduleDateLocal = billPay.ScheduleDate.ToLocalTime(),
+                    Period = billPay.Period,
+                    BillPayEditOp = BillPayEditOp.Edit
+                };
+
+                HttpContext.Session.SetInt32(BillPaySessionKey.EditBillPayID, billPayId);
+            }
+
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            viewModel.Customer = customer;
+
             return View(viewModel);
         }
 
         [Route("Create")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-            if (viewModel != null)
-                return View(viewModel);
+            if (viewModel == null)
+                viewModel = new BillPayEditViewModel();
 
-            return View(new BillPayEditViewModel
-            {
-                BillPayEditOp = BillPayEditOp.Create
-            });
+            var customer = await _context.Customer.FindAsync(CustomerID);
+
+            viewModel.BillPayEditOp = BillPayEditOp.Create;
+            viewModel.Customer = customer;
+
+            return View(viewModel);
+        }
+
+        [Route("EditOrCreateToPayee/Create")]
+        [HttpPost]
+        public IActionResult EditOrCreateToPayeeCreate(BillPayEditViewModel viewModel)
+        {                
+            BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
+
+            return RedirectToAction("Create", "Payee");
         }
 
         [Route("EditOrCreateToPayee")]
@@ -79,10 +102,9 @@ namespace Banking.Controllers
         {
             BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
 
-            if (viewModel.PayeeOp == PayeeOp.Choose)
-                return RedirectToAction("Index", "Payee");
-            return RedirectToAction("Create", "Payee");
+            return RedirectToAction("Index", "Payee");
         }
+
 
         [Route("Edit")]
         [HttpPost]
@@ -106,7 +128,7 @@ namespace Banking.Controllers
                 Period = viewModel.Period,
                 Amount = viewModel.Amount,
                 ScheduleDate = viewModel.ScheduleDate,
-                PayeeID = viewModel.PayeeID
+                Payee = viewModel.Payee
             };
             _context.BillPay.Update(billPay);
             await _context.SaveChangesAsync();
@@ -130,7 +152,7 @@ namespace Banking.Controllers
             var billPay = new BillPay
             {
                 Amount = viewModel.Amount,
-                PayeeID = viewModel.PayeeID,
+                Payee = viewModel.Payee,
                 Period = viewModel.Period,
                 ScheduleDate = viewModel.ScheduleDate
             };

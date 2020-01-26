@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+
 
 using Banking.Attributes;
 using Banking.Data;
@@ -42,12 +44,12 @@ namespace Banking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(int payeeID)
+        public async Task<IActionResult> Index([FromForm] int payeeID)
         {
             var payee = await _context.Payee.FindAsync(payeeID);
 
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-            viewModel.PayeeID = payeeID;
+            viewModel.Payee = payee;
             BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
 
             if (viewModel.BillPayEditOp == BillPayEditOp.Create)
@@ -60,15 +62,21 @@ namespace Banking.Controllers
 
         [Route("Create")]
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name,Address,City,State,PostCode,Phone")] Payee payee)
+        public IActionResult Create([Bind("Name,Address,City,State,PostCode,Phone")] Payee payee)
         {
-            await _context.Payee.AddAsync(payee);
-            await _context.SaveChangesAsync();
-
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-            viewModel.PayeeID = payee.PayeeID;
+            viewModel.Payee = payee;
             BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
 
+            if (viewModel.BillPayEditOp == BillPayEditOp.Create)
+                return RedirectToAction("Create", "BillPay");
+            return RedirectToAction("Edit", "BillPay");
+        }
+
+        [Route("Cancel")]
+        public IActionResult Cancel()
+		{
+            var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
             if (viewModel.BillPayEditOp == BillPayEditOp.Create)
                 return RedirectToAction("Create", "BillPay");
             return RedirectToAction("Edit", "BillPay");

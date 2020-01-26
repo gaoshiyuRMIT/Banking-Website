@@ -52,7 +52,8 @@ namespace Banking.ViewModels
             get => _scheduleDate;
             set => _scheduleDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
         }
-        public int PayeeID { get; set; }
+        public Payee Payee { get; set; }
+
         public BillPayEditOp BillPayEditOp { get; set; }
         public PayeeOp PayeeOp { get; set; }
 
@@ -62,7 +63,10 @@ namespace Banking.ViewModels
 
             if (ScheduleDate <= DateTime.UtcNow)
                 modelState.AddModelError("ScheduleDateLocal",
-                    "Schedule date must be in the future."); 
+                    "Schedule date must be in the future.");
+            if (Payee == null)
+                modelState.AddModelError("Payee",
+                    "Must specify payee.");
         }
     }
 }
