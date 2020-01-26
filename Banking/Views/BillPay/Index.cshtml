@@ -3,3 +3,34 @@
 @{
     ViewData["Title"] = "Bill Pay";
 }
+<div class="row">
+    <div class="col-md-4">
+        <h1>Scheduled Bill Pays</h1>
+        <a asp-action="Create" class="btn btn-secondary">Schedule a New Bill Pay</a>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.AccountNumber)</th>
+            <th>@Html.DisplayNameFor(model => model.PayeeID)</th>
+            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+            <th>@Html.DisplayNameFor(model => model.ScheduleDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Period)</th>
+        </tr>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => item.AccountNumber)</td>
+                <td>@Html.DisplayFor(x => item.PayeeID)</td>
+                <td>@Html.DisplayFor(x => item.Amount)</td>
+                <td>@Html.DisplayFor(x => item.ScheduleDate)</td>
+                <td>@Html.DisplayFor(x => item.Period)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-BillPayID=@item.BillPayID class="btn btn-primary">Modify</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
