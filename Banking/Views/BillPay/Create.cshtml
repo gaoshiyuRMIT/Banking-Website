@@ -20,12 +20,20 @@
                 <label class="control-label">Payee</label>
                 @if (Model.Payee != null)
                 {
-                    <div class="p-2">
-                        <label asp-for="Payee.Name" class="control-label"></label>
-                        <input readonly asp-for="Payee.Name" class="form-control" />
-                        <label asp-for="Payee.Address" class="control-label"></label>
-                        <input readonly asp-for="Payee.Address" class="form-control" />
-                    </div>
+            <div class="p-2">
+                <label asp-for="Payee.Name" class="control-label"></label>
+                <input readonly asp-for="Payee.Name" class="form-control" />
+                <label asp-for="Payee.Address" class="control-label"></label>
+                <input readonly asp-for="Payee.Address" class="form-control" />
+                <label asp-for="Payee.City" class="control-label"></label>
+                <input readonly asp-for="Payee.City" class="form-control" />
+                <label asp-for="Payee.State" class="control-label"></label>
+                <input readonly asp-for="Payee.State" class="form-control" />
+                <label asp-for="Payee.PostCode" class="control-label"></label>
+                <input readonly asp-for="Payee.PostCode" class="form-control" />
+                <label asp-for="Payee.Phone" class="control-label"></label>
+                <input readonly asp-for="Payee.Phone" class="form-control" />
+            </div>
                 }
                 <div class="list-group">
                     <input type="submit" asp-action="EditOrCreateToPayeeCreate" value="Add a New Payee" class="list-group-item list-group-item-action" />

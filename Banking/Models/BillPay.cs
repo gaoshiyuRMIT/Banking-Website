@@ -27,6 +27,7 @@ namespace Banking.Models
         public DateTime ScheduleDate { get; set; }
         public BillPayPeriod Period { get; set; }
         public DateTime ModifyDate { get; set; }
+       // public string Comment { get; set; }
     }
 
 }
