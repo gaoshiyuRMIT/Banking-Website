@@ -44,9 +44,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" value="@Model.Amount.ToString("0.00")"
-                        data-val="true" data-val-number="The field Amount must be a number."
-                        data-val-required="The Amount field is required." />
+                <input asp-for="Amount" class="form-control" value="@Model.Amount.ToString("0.00")" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
 
