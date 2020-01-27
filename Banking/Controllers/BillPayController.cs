@@ -78,13 +78,15 @@ namespace Banking.Controllers
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
             if (viewModel == null)
-                viewModel = new BillPayEditViewModel();
+                viewModel = new BillPayEditViewModel
+                {
+                    ScheduleDate = DateTime.UtcNow
+                };
 
             var customer = await _context.Customer.FindAsync(CustomerID);
 
             viewModel.BillPayEditOp = BillPayEditOp.Create;
             viewModel.Customer = customer;
-            viewModel.ScheduleDate = DateTime.UtcNow;
 
             return View(viewModel);
         }
