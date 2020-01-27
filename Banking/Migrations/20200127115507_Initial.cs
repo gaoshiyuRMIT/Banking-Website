@@ -12,13 +12,13 @@ namespace Banking.Migrations
                 columns: table => new
                 {
                     CustomerID = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    TFN = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     PostCode = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true)
+                    Phone = table.Column<string>(nullable: true),
+                    TFN = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,10 +48,10 @@ namespace Banking.Migrations
                 columns: table => new
                 {
                     AccountNumber = table.Column<int>(nullable: false),
+                    ModifyDate = table.Column<DateTime>(nullable: false),
                     AccountType = table.Column<int>(nullable: false),
                     CustomerID = table.Column<int>(nullable: false),
-                    Balance = table.Column<decimal>(nullable: false),
-                    ModifyDate = table.Column<DateTime>(nullable: false)
+                    Balance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,9 +69,9 @@ namespace Banking.Migrations
                 columns: table => new
                 {
                     UserID = table.Column<string>(maxLength: 8, nullable: false),
+                    ModifyDate = table.Column<DateTime>(nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 64, nullable: false),
-                    CustomerID = table.Column<int>(nullable: false),
-                    ModifyDate = table.Column<DateTime>(nullable: false)
+                    CustomerID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,12 +90,13 @@ namespace Banking.Migrations
                 {
                     BillPayID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ModifyDate = table.Column<DateTime>(nullable: false),
                     AccountNumber = table.Column<int>(nullable: false),
                     PayeeID = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     ScheduleDate = table.Column<DateTime>(nullable: false),
                     Period = table.Column<int>(nullable: false),
-                    ModifyDate = table.Column<DateTime>(nullable: false)
+                    Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,12 +121,12 @@ namespace Banking.Migrations
                 {
                     TransactionID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ModifyDate = table.Column<DateTime>(nullable: false),
                     TransactionType = table.Column<int>(nullable: false),
                     AccountNumber = table.Column<int>(nullable: false),
                     DestAccountNumber = table.Column<int>(nullable: true),
                     Amount = table.Column<decimal>(nullable: false),
-                    Comment = table.Column<string>(nullable: true),
-                    ModifyDate = table.Column<DateTime>(nullable: false)
+                    Comment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

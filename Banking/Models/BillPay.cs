@@ -27,7 +27,7 @@ namespace Banking.Models
         public decimal Amount { get; set; }
         public DateTime ScheduleDate { get; set; }
         public BillPayPeriod Period { get; set; }
-        // public string Comment { get; set; }
+        public string Comment { get; set; }
 
         public DateTime ScheduleDateLocal => ScheduleDate.ToLocalTime();
         
