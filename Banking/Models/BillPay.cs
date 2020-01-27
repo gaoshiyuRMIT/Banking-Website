@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using Banking.Extensions;
 
 namespace Banking.Models
 {
@@ -13,7 +14,7 @@ namespace Banking.Models
         Annually = 3
     };
 
-    public class BillPay
+    public class BillPay : AModifyDate
     {
         public int BillPayID { get; set; }
         [ForeignKey("Account")]
@@ -26,8 +27,48 @@ namespace Banking.Models
         public decimal Amount { get; set; }
         public DateTime ScheduleDate { get; set; }
         public BillPayPeriod Period { get; set; }
-        public DateTime ModifyDate { get; set; }
-       // public string Comment { get; set; }
+        public string Comment { get; set; }
+
+        public DateTime ScheduleDateLocal => ScheduleDate.ToLocalTime();
+        
+        public DateTime? NextDateTime
+        {
+            get
+            {
+                if (ScheduleDate > DateTime.UtcNow)
+                    return ScheduleDate;
+                if (Period == BillPayPeriod.OnceOff)
+                    return null;
+                int nMonth = Period.ToMonth().Value;
+                DateTime _scheduleDate = ScheduleDate;
+                while (_scheduleDate <= DateTime.UtcNow)
+                {
+                    _scheduleDate.AddMonths(nMonth);
+                }
+                return _scheduleDate;
+            }
+        }
+
+        public bool ExecuteBillPay(out string errMsg)
+        {
+            errMsg = string.Empty;
+            if (Account.Balance - Amount < Account.MinBalance)
+            {
+                errMsg = "The amount after deduction would be lower than the minimum allowed.";
+                return false;
+            }
+            Account.Balance -= Amount;
+            Account.Transactions.Add(new Transaction
+            {
+                TransactionType = TransactionType.BillPay,
+                Amount = Amount,
+                ModifyDate = DateTime.UtcNow
+            });
+            // update schedule date
+            if (Period != BillPayPeriod.OnceOff)
+                ScheduleDate = NextDateTime.Value;
+            return true;
+        }
     }
 
 }

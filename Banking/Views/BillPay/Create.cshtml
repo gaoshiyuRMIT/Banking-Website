@@ -21,6 +21,7 @@
                 @if (Model.Payee != null)
                 {
             <div class="p-2">
+                <input hidden asp-for="Payee.PayeeID" class="form-control" />
                 <label asp-for="Payee.Name" class="control-label"></label>
                 <input readonly asp-for="Payee.Name" class="form-control" />
                 <label asp-for="Payee.Address" class="control-label"></label>
@@ -51,7 +52,7 @@
 
                 <div class="form-group">
                     <label asp-for="ScheduleDateLocal" class="control-label"></label>
-                    <input type="date" asp-for="ScheduleDateLocal" class="form-control" />
+                    <input type="datetime-local" asp-for="ScheduleDateLocal" class="form-control" />
                     <span asp-validation-for="ScheduleDateLocal" class="text-danger"></span>
                 </div>
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Banking.Models
 {
-    public class Login
+    public class Login : AModifyDate
     {
         [Key]
         [StringLength(8)]
@@ -15,7 +15,5 @@ namespace Banking.Models
 
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
-
-        public DateTime ModifyDate { get; set; }
     }
 }
