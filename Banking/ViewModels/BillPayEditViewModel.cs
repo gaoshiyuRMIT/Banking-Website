@@ -36,7 +36,7 @@ namespace Banking.ViewModels
                     object bp = Enum.Parse(typeof(BillPayPeriod), name);
                     select.Add(new SelectListItem
                     {
-                        Text = bp.ToString(),
+                        Text = ((BillPayPeriod)bp).ToFriendlyString(),
                         Value = name
                     });
                 }

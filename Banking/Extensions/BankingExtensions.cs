@@ -16,11 +16,11 @@ namespace Banking.Extensions
 
     public static class BillPayPeriodExtensions
     {
-        public static string ToString(this BillPayPeriod bp)
+        public static string ToFriendlyString(this BillPayPeriod bp)
         {
             if (bp == BillPayPeriod.OnceOff)
                 return "Once Off";
-            return bp.ToString();
+            return Enum.GetName(typeof(BillPayPeriod), bp);
         }
 
         public static int? ToMonth(this BillPayPeriod bp)
