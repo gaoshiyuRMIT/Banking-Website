@@ -48,10 +48,10 @@ namespace Banking.Migrations
                 columns: table => new
                 {
                     AccountNumber = table.Column<int>(nullable: false),
-                    AccountType = table.Column<int>(nullable: false),
+                    AccountType = table.Column<int>(maxLength: 1, nullable: false),
                     CustomerID = table.Column<int>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false),
-                    ModifyDate = table.Column<DateTime>(nullable: false)
+                    ModifyDate = table.Column<DateTime>(maxLength: 8, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,7 +71,7 @@ namespace Banking.Migrations
                     UserID = table.Column<string>(maxLength: 8, nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 64, nullable: false),
                     CustomerID = table.Column<int>(nullable: false),
-                    ModifyDate = table.Column<DateTime>(nullable: false)
+                    ModifyDate = table.Column<DateTime>(maxLength: 8, nullable: false)
                 },
                 constraints: table =>
                 {
