@@ -14,7 +14,7 @@ namespace Banking.Models
         Annually = 3
     };
 
-    public class BillPay
+    public class BillPay : AModifyDate
     {
         public int BillPayID { get; set; }
         [ForeignKey("Account")]
@@ -27,8 +27,7 @@ namespace Banking.Models
         public decimal Amount { get; set; }
         public DateTime ScheduleDate { get; set; }
         public BillPayPeriod Period { get; set; }
-        public DateTime ModifyDate { get; set; }
-       // public string Comment { get; set; }
+        // public string Comment { get; set; }
 
         public DateTime ScheduleDateLocal => ScheduleDate.ToLocalTime();
         

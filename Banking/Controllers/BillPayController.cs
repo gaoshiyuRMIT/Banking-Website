@@ -83,6 +83,7 @@ namespace Banking.Controllers
 
             viewModel.BillPayEditOp = BillPayEditOp.Create;
             viewModel.Customer = customer;
+            viewModel.ScheduleDate = DateTime.UtcNow;
 
             return View(viewModel);
         }

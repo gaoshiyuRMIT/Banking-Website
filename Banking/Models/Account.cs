@@ -11,7 +11,7 @@ namespace Banking.Models
         Checking = 1
     }
 
-    public class Account
+    public class Account : AModifyDate
     {
         public decimal MinBalance {
             get => AccountType == AccountType.Savings ? 0 : 200;
@@ -30,8 +30,6 @@ namespace Banking.Models
         public virtual Customer Customer { get; set; }
 
         public decimal Balance { get; set; }
-
-        public DateTime ModifyDate { get; set; }
 
         public virtual List<Transaction> Transactions { get; set; }
         public virtual List<BillPay> BillPays { get; set; }
