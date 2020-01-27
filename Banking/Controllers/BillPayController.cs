@@ -60,7 +60,8 @@ namespace Banking.Controllers
                     AccountType = billPay.Account.AccountType,
                     ScheduleDateLocal = billPay.ScheduleDate.ToLocalTime(),
                     Period = billPay.Period,
-                    BillPayEditOp = BillPayEditOp.Edit
+                    BillPayEditOp = BillPayEditOp.Edit,
+                    Amount = billPay.Amount
                 };
 
                 HttpContext.Session.SetInt32(BillPaySessionKey.EditBillPayID, billPayId);
