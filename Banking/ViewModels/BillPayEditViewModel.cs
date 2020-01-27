@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Banking.Models;
+using Banking.Extensions;
 
 namespace Banking.ViewModels
 {
@@ -45,12 +46,14 @@ namespace Banking.ViewModels
         public DateTime ScheduleDateLocal
         {
             get => _scheduleDate.ToLocalTime();
-            set => _scheduleDate = DateTime.SpecifyKind(value, DateTimeKind.Local);
+            set => _scheduleDate = value.SpecifySecond(0).ToUniversalTime();
+            
         }
         public DateTime ScheduleDate
         {
             get => _scheduleDate;
-            set => _scheduleDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+            set => _scheduleDate = DateTime
+                .SpecifyKind(value.SpecifySecond(0), DateTimeKind.Utc);
         }
         public Payee Payee { get; set; }
 
