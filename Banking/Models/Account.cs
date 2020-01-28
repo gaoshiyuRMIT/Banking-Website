@@ -34,7 +34,7 @@ namespace Banking.Models
 
 
         [Display(Name = "Account Type")]
-        [Required,StringLength(1,ErrorMessage ="No Such Account")]
+        [Required,StringLength(1, MinimumLength = 1,ErrorMessage ="No Such Account")]
         public AccountType AccountType { get; set; }
 
 
@@ -43,8 +43,8 @@ namespace Banking.Models
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
-        
-           
+
+        [Display(Name = "Balance")]
         [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Balance { get; set; }
 

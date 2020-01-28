@@ -16,17 +16,43 @@ namespace Banking.Models
 
     public class BillPay : AModifyDate
     {
+
+
+        [Display(Name = "Bill Pay ID")]
+        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
+        [RegularExpression(@"^\d{4}", ErrorMessage = "Only Numbers Allowed")]
         public int BillPayID { get; set; }
+
         [ForeignKey("Account")]
+
+        [Display(Name = "Account Number")]
+        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int AccountNumber { get; set; }
         public virtual Account Account { get; set; }
 
+
+        [Display(Name = "Payee ID")]
+        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
+        [RegularExpression(@"^\d{4}", ErrorMessage = "Only Numbers Allowed")]
         public int PayeeID { get; set; }
         public virtual Payee Payee { get; set; }
 
+        [Display(Name = "Amount")]
+        [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Amount { get; set; }
+
+
+        [Display(Name = "Schedule Date")]
+        [Required, StringLength(8, MinimumLength = 8, ErrorMessage = "No More Than 8 digits")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ScheduleDate { get; set; }
+
+        [Display(Name = "Period")]
+        [Required, StringLength(1, MinimumLength = 1, ErrorMessage = "No Such Period")]
         public BillPayPeriod Period { get; set; }
+
+        [Display(Name = "Comment")]
+        [StringLength(255, ErrorMessage = "No More Than 255 characters")]
         public string Comment { get; set; }
 
         public DateTime ScheduleDateLocal => ScheduleDate.ToLocalTime();
