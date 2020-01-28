@@ -6,9 +6,12 @@ namespace Banking.Models
     public abstract class AModifyDate
     {
         [Display(Name = "Modify Date")]
-        [Required, StringLength(8, MinimumLength = 8,ErrorMessage = "No More Than 8 digits")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ModifyDate { get; set; }
+
+        [Display(Name = "Modify Date Local")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ModifyDateLocal => ModifyDate.ToLocalTime();
     }
 }

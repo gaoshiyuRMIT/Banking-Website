@@ -49,7 +49,7 @@ namespace Banking.Migrations
                 {
                     AccountNumber = table.Column<int>(nullable: false),
                     ModifyDate = table.Column<DateTime>(maxLength: 8, nullable: false),
-                    AccountType = table.Column<int>(maxLength: 1, nullable: false),
+                    AccountType = table.Column<int>(nullable: false),
                     CustomerID = table.Column<int>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false)
                 },
@@ -94,7 +94,7 @@ namespace Banking.Migrations
                     AccountNumber = table.Column<int>(nullable: false),
                     PayeeID = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
-                    ScheduleDate = table.Column<DateTime>(maxLength: 8, nullable: false),
+                    ScheduleDate = table.Column<DateTime>(maxLength: 12, nullable: false),
                     Period = table.Column<int>(maxLength: 1, nullable: false),
                     Comment = table.Column<string>(maxLength: 255, nullable: true)
                 },
@@ -122,7 +122,7 @@ namespace Banking.Migrations
                     TransactionID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ModifyDate = table.Column<DateTime>(maxLength: 8, nullable: false),
-                    TransactionType = table.Column<int>(maxLength: 1, nullable: false),
+                    TransactionType = table.Column<int>(nullable: false),
                     AccountNumber = table.Column<int>(nullable: false),
                     DestAccountNumber = table.Column<int>(nullable: true),
                     Amount = table.Column<decimal>(nullable: false),

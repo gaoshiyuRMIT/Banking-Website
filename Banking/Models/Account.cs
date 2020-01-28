@@ -27,14 +27,13 @@ namespace Banking.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-
         [Display(Name = "Account Number")]
-        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
+        [Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int AccountNumber { get; set; }
 
 
         [Display(Name = "Account Type")]
-        [Required,StringLength(1, MinimumLength = 1,ErrorMessage ="No Such Account")]
+        [Required]
         public AccountType AccountType { get; set; }
 
 
@@ -45,7 +44,7 @@ namespace Banking.Models
 
 
         [Display(Name = "Balance")]
-        [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
+        [Required, DataType(DataType.Currency),Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Balance { get; set; }
 
 
