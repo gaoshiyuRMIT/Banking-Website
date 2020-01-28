@@ -59,7 +59,8 @@ namespace Banking.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<DateTime>("ModifyDate")
                         .HasColumnType("datetime2")
@@ -69,10 +70,12 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Period")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(1);
 
                     b.Property<DateTime>("ScheduleDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasMaxLength(8);
 
                     b.HasKey("BillPayID");
 
@@ -115,7 +118,8 @@ namespace Banking.Migrations
                         .HasMaxLength(3);
 
                     b.Property<string>("TFN")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(11)")
+                        .HasMaxLength(11);
 
                     b.HasKey("CustomerID");
 
@@ -199,7 +203,8 @@ namespace Banking.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<int?>("DestAccountNumber")
                         .HasColumnType("int");
@@ -209,7 +214,8 @@ namespace Banking.Migrations
                         .HasMaxLength(8);
 
                     b.Property<int>("TransactionType")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(1);
 
                     b.HasKey("TransactionID");
 

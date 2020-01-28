@@ -18,7 +18,7 @@ namespace Banking.Migrations
                     State = table.Column<string>(maxLength: 3, nullable: true),
                     PostCode = table.Column<string>(maxLength: 4, nullable: true),
                     Phone = table.Column<string>(maxLength: 9, nullable: false),
-                    TFN = table.Column<string>(nullable: true)
+                    TFN = table.Column<string>(maxLength: 11, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,9 +94,9 @@ namespace Banking.Migrations
                     AccountNumber = table.Column<int>(nullable: false),
                     PayeeID = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
-                    ScheduleDate = table.Column<DateTime>(nullable: false),
-                    Period = table.Column<int>(nullable: false),
-                    Comment = table.Column<string>(nullable: true)
+                    ScheduleDate = table.Column<DateTime>(maxLength: 8, nullable: false),
+                    Period = table.Column<int>(maxLength: 1, nullable: false),
+                    Comment = table.Column<string>(maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,11 +122,11 @@ namespace Banking.Migrations
                     TransactionID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ModifyDate = table.Column<DateTime>(maxLength: 8, nullable: false),
-                    TransactionType = table.Column<int>(nullable: false),
+                    TransactionType = table.Column<int>(maxLength: 1, nullable: false),
                     AccountNumber = table.Column<int>(nullable: false),
                     DestAccountNumber = table.Column<int>(nullable: true),
                     Amount = table.Column<decimal>(nullable: false),
-                    Comment = table.Column<string>(nullable: true)
+                    Comment = table.Column<string>(maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
