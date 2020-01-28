@@ -36,7 +36,6 @@ namespace Banking.Models
         public TransactionType TransactionType { get; set; }
 
         [Display(Name = "Account Number")]
-        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int AccountNumber { get; set; }
         public virtual Account Account { get; set; }
 

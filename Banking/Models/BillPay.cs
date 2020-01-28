@@ -30,7 +30,6 @@ namespace Banking.Models
 
 
         [Display(Name = "Payee ID")]
-        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int PayeeID { get; set; }
         public virtual Payee Payee { get; set; }
 
