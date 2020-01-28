@@ -10,7 +10,14 @@ namespace Banking.Models
     public class Customer : APerson
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Display(Name = "Customer ID")]
+        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int CustomerID { get; set; }
+
+
+        
+        [Display(Name = "TFN")]
+        [StringLength(11, ErrorMessage = "Must be Tax File Number")]
         public string TFN { get; set; }
 
         public virtual List<Account> Accounts { get; set; }

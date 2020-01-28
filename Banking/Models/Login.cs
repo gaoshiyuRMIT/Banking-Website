@@ -9,7 +9,7 @@ namespace Banking.Models
 
         [Key]
         [Display(Name = "User ID")]
-        [Required, StringLength(8, ErrorMessage = "No More Than 8 digits")]
+        [Required, StringLength(8, MinimumLength = 8, ErrorMessage = "No More Than 8 digits")]
         [RegularExpression(@"^\d{8}", ErrorMessage = "Only Numbers Allowed")]
 
         public string UserID { get; set; }
