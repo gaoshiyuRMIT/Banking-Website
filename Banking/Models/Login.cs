@@ -16,10 +16,7 @@ namespace Banking.Models
         [Required, StringLength(64)]
         public string PasswordHash { get; set; }
 
-
-
         [Display(Name = "Customer ID")]
-        [Required,Range(0,9999, ErrorMessage ="No More Than 4 digits")]
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
     }
