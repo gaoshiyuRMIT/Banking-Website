@@ -13,12 +13,12 @@ namespace Banking.Models
 
     public class Account : AModifyDate
     {
-        [Display(Name = "Min Balance")]
+        [Display(Name = "Minimum Balance")]
         [Range(0, (double)decimal.MaxValue, ErrorMessage = "Saving Account Must Be Zero and more")]
         public decimal MinBalance {
             get => AccountType == AccountType.Savings ? 0 : 200;
         }
-        [Display(Name = "Min Opening Balance")]
+        [Display(Name = "Minimum Opening Balance")]
         [Range(200, (double)decimal.MaxValue, ErrorMessage = "Saving Account Opening Balance Must Be More Than $200")]
         public decimal MinOpeningBalance
         {
