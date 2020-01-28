@@ -2,44 +2,37 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using Banking.Attributes;
 
 namespace Banking.Models
 {
     public abstract class APerson
     {
-        [Display(Name = "Name")]
-        [Required, StringLength(50, ErrorMessage = "Please enter 50 characters")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only  letter allowed.")]
+        [Required, StringLength(50, ErrorMessage = "50 characters maximum.")]
+        [RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "Only letters and spaces are allowed.")]
         public string Name { get; set; }
 
-
-        [Display(Name = "Address")]
-        [StringLength(50, ErrorMessage = "Please enter no more than 50 characters")]
+        [StringLength(50, ErrorMessage = "50 characters maximum.")]
         public string Address { get; set; }
 
-        [Display(Name = "City")]
-        [StringLength(40, ErrorMessage = "Please enter no more than 40 characters")]
+        [StringLength(40, ErrorMessage = "40 characters maximum.")]
         public string City { get; set; }
 
-        [Display(Name = "State")]
-        [StringLength(3, MinimumLength = 3,ErrorMessage = "Please enter 3 lettered Australian state")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only 3 letters allowed.")]
+        [RegularExpression(@"^[A-Z]{2,3}$",
+            ErrorMessage = "Must be 2 or 3 upper case letters.")]
+        [StringLength(3, MinimumLength = 2)]
+        [AusState]
         public string State { get; set; }
 
 
         [Display(Name = "Post Code")]
-        [StringLength(4,  MinimumLength = 4,ErrorMessage = "Please enter 4 digit number")]
-        [RegularExpression(@"^\d{4}", ErrorMessage = "Only 4 Numbers allowed.")]
+        [RegularExpression(@"^\d{4}", ErrorMessage = "Must be 4 digits.")]
+        [StringLength(4, MinimumLength = 4)]
         public string PostCode { get; set; }
 
-
-        [Display(Name = "Phone")]
-        //[Required(ErrorMessage = "You must provide a phone number")]
-        //[DataType(DataType.PhoneNumber)]
-        //[RegularExpression(@"^\(\+61)[-. ]([0-9]{9})$", ErrorMessage = "Not a valid phone number")]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:61-XXXXXXXXX}")]
-        //[RegularExpression(@"^\(\+61|0)[0-9]{9}$", ErrorMessage = "Not a valid phone number, the format must be 61XXXXXXXXX)]
-        
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "Must be a 9-digit Australian phone number.")]
+        [StringLength(9, MinimumLength = 9)]
+        [Required]
         public string Phone { get; set; }
     }
 }

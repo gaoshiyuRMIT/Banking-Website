@@ -17,7 +17,7 @@ namespace Banking.Migrations
                     City = table.Column<string>(maxLength: 40, nullable: true),
                     State = table.Column<string>(maxLength: 3, nullable: true),
                     PostCode = table.Column<string>(maxLength: 4, nullable: true),
-                    Phone = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(maxLength: 9, nullable: false),
                     TFN = table.Column<string>(maxLength: 11, nullable: true)
                 },
                 constraints: table =>
@@ -36,7 +36,7 @@ namespace Banking.Migrations
                     City = table.Column<string>(maxLength: 40, nullable: true),
                     State = table.Column<string>(maxLength: 3, nullable: true),
                     PostCode = table.Column<string>(maxLength: 4, nullable: true),
-                    Phone = table.Column<string>(nullable: true)
+                    Phone = table.Column<string>(maxLength: 9, nullable: false)
                 },
                 constraints: table =>
                 {

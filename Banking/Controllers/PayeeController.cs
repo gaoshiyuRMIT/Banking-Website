@@ -64,6 +64,9 @@ namespace Banking.Controllers
         [HttpPost]
         public IActionResult Create([Bind("Name,Address,City,State,PostCode,Phone")] Payee payee)
         {
+            if (!ModelState.IsValid)
+                return View(payee);
+
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
             viewModel.Payee = payee;
             BillPaySessionKey.SetEditViewModelToSession(viewModel, HttpContext.Session);
