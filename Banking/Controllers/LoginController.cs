@@ -19,7 +19,14 @@ namespace Banking.Controllers
     {
         private readonly BankingContext _context;
 
-        public IActionResult Index() => View();
+        public IActionResult Index() =>
+            View(new LoginViewModel
+            {
+                Login = new Login
+                {
+                    PasswordHash = Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                }
+            });
 
         public LoginController(BankingContext context)
         {
