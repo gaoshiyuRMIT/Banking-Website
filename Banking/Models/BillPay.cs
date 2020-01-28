@@ -40,7 +40,7 @@ namespace Banking.Models
 
 
         [Display(Name = "Schedule Date")]
-        [Required, StringLength(12, MinimumLength = 12, ErrorMessage = "No More Than 12 digits")]
+        [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ScheduleDate { get; set; }
 
@@ -53,8 +53,7 @@ namespace Banking.Models
         public string Comment { get; set; }
 
         [Display(Name = "Schedule Date Local")]
-        [Required, StringLength(12, MinimumLength = 12, ErrorMessage = "No More Than 12 digits")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ScheduleDateLocal => ScheduleDate.ToLocalTime();
         
         public DateTime? NextDateTime
