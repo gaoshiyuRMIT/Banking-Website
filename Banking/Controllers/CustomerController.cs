@@ -60,11 +60,11 @@ namespace Banking.Controllers
                 return View(viewModel);
 
             var account = viewModel.Account;
-            account.Deposit(viewModel.Amount, viewModel.Comment);
+            account.Withdraw(viewModel.Amount, viewModel.Comment);
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
-            viewModel.Amount = 0;
+            viewModel.Clear();
             return View(viewModel);
         }
 
@@ -94,7 +94,7 @@ namespace Banking.Controllers
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
-            viewModel.Amount = 0;
+            viewModel.Clear();
             return View(viewModel);
         }
 
@@ -125,8 +125,7 @@ namespace Banking.Controllers
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
-            viewModel.Amount = 0;
-            viewModel.DestAccountNumber = 0;
+            viewModel.Clear();
             return View(viewModel);
         }
 
