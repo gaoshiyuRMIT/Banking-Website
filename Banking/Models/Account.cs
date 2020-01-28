@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace Banking.Models
         Checking = 1
     }
 
-    public class Account : AModifyDate
+    public partial class Account : AModifyDate
     {
         [Display(Name = "Min Balance")]
         [Range(0, (double)decimal.MaxValue, ErrorMessage = "Saving Account Must Be Zero and more")]
@@ -49,5 +50,66 @@ namespace Banking.Models
 
         public virtual List<Transaction> Transactions { get; set; }
         public virtual List<BillPay> BillPays { get; set; }
+    }
+
+    public partial class Account : AModifyDate
+    {
+        public void Deposit(decimal amount, string comment)
+        {
+            Balance += amount;
+            ModifyDate = DateTime.UtcNow;
+            Transaction t = new Transaction
+            {
+                TransactionType = TransactionType.Deposit,
+                Amount = amount,
+                ModifyDate = DateTime.UtcNow,
+                Comment = comment
+            };
+            Transactions.Add(t);
+        }
+
+        public void Withdraw(decimal amount, string comment)
+        {
+            Balance -= amount;
+            ModifyDate = DateTime.UtcNow;
+            Transaction t = new Transaction
+            {
+                TransactionType = TransactionType.Withdrawal,
+                Amount = amount,
+                ModifyDate = DateTime.UtcNow,
+                Comment = comment
+            };
+            Transactions.Add(t);
+            // deals with service fee
+            if (t.ShouldCharge)
+            {
+                int nShouldCharge = Transactions.Where(x => x.ShouldCharge).Count();
+                if (nShouldCharge > Transaction.NFreeTransaction)
+                    Transactions.Add(t.CreateServiceTransaction());
+            }
+        }
+
+        public void Transfer(Account destAccount, decimal amount, string comment)
+        {
+            Balance -= amount;
+            ModifyDate = DateTime.UtcNow;
+            destAccount.Balance += amount;
+            destAccount.ModifyDate = DateTime.UtcNow;
+            Transaction t = new Transaction
+            {
+                TransactionType = TransactionType.Transfer,
+                Amount = amount,
+                DestAccount = destAccount,
+                ModifyDate = DateTime.UtcNow,
+                Comment = comment
+            };
+            if (t.ShouldCharge)
+            {
+                int nShouldCharge = Transactions.Where(x => x.ShouldCharge).Count();
+                if (nShouldCharge > Transaction.NFreeTransaction)
+                    Transactions.Add(t.CreateServiceTransaction());
+            }
+
+        }
     }
 }
