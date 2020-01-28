@@ -31,5 +31,10 @@ namespace Banking.ViewModels
                     "The provided destination account number is invalid.");
         }
 
+        public override void Clear()
+        {
+            base.Clear();
+            DestAccountNumber = 0;
+        }
     }
 }

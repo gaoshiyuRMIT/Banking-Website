@@ -10,14 +10,14 @@ using Banking.Models;
 
 namespace Banking.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel : BaseViewModel
     {
         public Login Login { get; set; }
 
         [Required, StringLength(20)]
         public string Password { get; set; }
 
-        public void Validate(ModelStateDictionary modelState)
+        public override void Validate(ModelStateDictionary modelState)
         {
             if (Login == null || !PBKDF2.Verify(Login.PasswordHash, Password))
             {
