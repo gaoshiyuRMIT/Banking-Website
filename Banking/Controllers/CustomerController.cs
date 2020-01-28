@@ -60,25 +60,11 @@ namespace Banking.Controllers
                 return View(viewModel);
 
             var account = viewModel.Account;
-            account.Balance -= viewModel.Amount;
-            Transaction t = new Transaction
-            {
-                TransactionType = TransactionType.Withdrawal,
-                Amount = viewModel.Amount,
-                ModifyDate = DateTime.UtcNow
-            };
-            account.Transactions.Add(t);
-            // deals with service fee
-            if (t.ShouldCharge)
-            {
-                int nShouldCharge = account.Transactions.Where(x => x.ShouldCharge).Count();
-                if (nShouldCharge > Transaction.NFreeTransaction)
-                    account.Transactions.Add(t.CreateServiceTransaction());
-            }
+            account.Withdraw(viewModel.Amount, viewModel.Comment);
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
-            viewModel.Amount = 0;
+            viewModel.Clear();
             return View(viewModel);
         }
 
@@ -104,19 +90,11 @@ namespace Banking.Controllers
                 return View(viewModel);
 
             var account = viewModel.Account;
-
-            account.Balance += viewModel.Amount;
-            Transaction t = new Transaction
-            {
-                TransactionType = TransactionType.Deposit,
-                Amount = viewModel.Amount,
-                ModifyDate = DateTime.UtcNow
-            };
-            account.Transactions.Add(t);
+            account.Deposit(viewModel.Amount, viewModel.Comment);
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
-            viewModel.Amount = 0;
+            viewModel.Clear();
             return View(viewModel);
         }
 
@@ -143,27 +121,11 @@ namespace Banking.Controllers
                 return View(viewModel);
 
             var account = viewModel.Account;
-
-            account.Balance -= viewModel.Amount;
-            destAccount.Balance += viewModel.Amount;
-            Transaction t = new Transaction
-            {
-                TransactionType = TransactionType.Transfer,
-                Amount = viewModel.Amount,
-                DestAccount = destAccount,
-                ModifyDate = DateTime.UtcNow
-            };
-            if (t.ShouldCharge)
-            {
-                int nShouldCharge = account.Transactions.Where(x => x.ShouldCharge).Count();
-                if (nShouldCharge > Transaction.NFreeTransaction)
-                    account.Transactions.Add(t.CreateServiceTransaction());
-            }
+            account.Transfer(viewModel.DestAccount, viewModel.Amount, viewModel.Comment);
             await _context.SaveChangesAsync();
 
             viewModel.OperationStatus = OperationStatus.Successful;
-            viewModel.Amount = 0;
-            viewModel.DestAccountNumber = 0;
+            viewModel.Clear();
             return View(viewModel);
         }
 

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Banking.Models
 {
-    public class Customer : APerson
+    public partial class Customer : APerson
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "Customer ID")]
@@ -21,5 +21,10 @@ namespace Banking.Models
         public string TFN { get; set; }
 
         public virtual List<Account> Accounts { get; set; }
+    }
+
+    public partial class Customer : APerson
+    {
+        
     }
 }

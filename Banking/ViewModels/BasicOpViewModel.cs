@@ -12,7 +12,7 @@ using Banking.Models;
 
 namespace Banking.ViewModels
 {
-    public class BasicOpViewModel
+    public class BasicOpViewModel : BaseViewModel
     {
         private List<SelectListItem> _accountTypes = new List<SelectListItem>();
         private Account _account;
@@ -70,8 +70,5 @@ namespace Banking.ViewModels
             }
         }
 
-        public virtual void Validate(ModelStateDictionary modelState)
-        {
-        }
     }
 }

@@ -30,5 +30,12 @@ namespace Banking.ViewModels
                 modelState.AddModelError("Amount", "Amount must be greater than zero.");
 
         }
+
+        public override void Clear()
+        {
+            base.Clear();
+            Amount = 0;
+            Comment = null;
+        }
     }
 }
