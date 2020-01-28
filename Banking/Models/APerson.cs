@@ -22,14 +22,14 @@ namespace Banking.Models
         public string City { get; set; }
 
         [Display(Name = "State")]
-        [StringLength(3, ErrorMessage = "Please enter 3 lettered Australian state")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only  letter allowed.")]
+        [StringLength(3, MinimumLength = 3,ErrorMessage = "Please enter 3 lettered Australian state")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Only 3 letters allowed.")]
         public string State { get; set; }
 
 
         [Display(Name = "Post Code")]
-        [StringLength(4, ErrorMessage = "Please enter 4 digit number")]
-        [RegularExpression(@"^\d{4}", ErrorMessage = "Only  Numbers allowed.")]
+        [StringLength(4,  MinimumLength = 4,ErrorMessage = "Please enter 4 digit number")]
+        [RegularExpression(@"^\d{4}", ErrorMessage = "Only 4 Numbers allowed.")]
         public string PostCode { get; set; }
 
 
@@ -38,6 +38,8 @@ namespace Banking.Models
         //[DataType(DataType.PhoneNumber)]
         //[RegularExpression(@"^\(\+61)[-. ]([0-9]{9})$", ErrorMessage = "Not a valid phone number")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:61-XXXXXXXXX}")]
+        //[RegularExpression(@"^\(\+61|0)[0-9]{9}$", ErrorMessage = "Not a valid phone number, the format must be 61XXXXXXXXX)]
+        
         public string Phone { get; set; }
     }
 }

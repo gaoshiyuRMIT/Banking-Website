@@ -34,7 +34,7 @@ namespace Banking.Models
 
 
         [Display(Name = "Account Type")]
-        [Required,StringLength(1,ErrorMessage ="No Such Account")]
+        [Required,StringLength(1, MinimumLength = 1,ErrorMessage ="No Such Account")]
         public AccountType AccountType { get; set; }
 
 

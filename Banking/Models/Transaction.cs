@@ -27,17 +27,29 @@ namespace Banking.Models
             get => TransactionType == TransactionType.Transfer
                 || TransactionType == TransactionType.Withdrawal;
         }
-
+        [Display(Name = "Transaction ID")]
+        [Required, Range (0,9999, ErrorMessage ="No Zero And No More Than 4 Digits")]
         public int TransactionID { get; set; }
+
+        [Display(Name = "Transaction Type")]
+        [Required, StringLength(1, ErrorMessage = "No Such Transaction")]
         public TransactionType TransactionType { get; set; }
 
+        [Display(Name = "Account Number")]
+        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int AccountNumber { get; set; }
         public virtual Account Account { get; set; }
 
+        [Display(Name = "Dest Account Number")]
+        [Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int? DestAccountNumber { get; set; }
         public virtual Account DestAccount { get; set; }
 
+        [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Amount { get; set; }
+
+        [Display(Name = "Comment")]
+        [StringLength(255, ErrorMessage = "No More Than 255 characters")]
         public string Comment { get; set; }
 
         public Transaction CreateServiceTransaction()
