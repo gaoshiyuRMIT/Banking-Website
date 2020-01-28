@@ -60,7 +60,8 @@ namespace Banking.Controllers
                     AccountType = billPay.Account.AccountType,
                     ScheduleDateLocal = billPay.ScheduleDate.ToLocalTime(),
                     Period = billPay.Period,
-                    BillPayEditOp = BillPayEditOp.Edit
+                    BillPayEditOp = BillPayEditOp.Edit,
+                    Amount = billPay.Amount
                 };
 
                 HttpContext.Session.SetInt32(BillPaySessionKey.EditBillPayID, billPayId);
@@ -77,7 +78,10 @@ namespace Banking.Controllers
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
             if (viewModel == null)
-                viewModel = new BillPayEditViewModel();
+                viewModel = new BillPayEditViewModel
+                {
+                    ScheduleDate = DateTime.UtcNow
+                };
 
             var customer = await _context.Customer.FindAsync(CustomerID);
 

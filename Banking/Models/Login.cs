@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Banking.Models
 {
-    public class Login
+    public class Login : AModifyDate
     {
 
 
@@ -23,13 +23,6 @@ namespace Banking.Models
         [Required,Range(0,9999, ErrorMessage ="No More Than 4 digits")]
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
-
-
-
-        [Display(Name = "Modify Date")]
-        [Required, StringLength(8, ErrorMessage = "No More Than 8 digits")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
-        public DateTime ModifyDate { get; set; }
     }
 }
 

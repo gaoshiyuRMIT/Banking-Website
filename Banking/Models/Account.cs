@@ -11,7 +11,7 @@ namespace Banking.Models
         Checking = 1
     }
 
-    public class Account
+    public class Account : AModifyDate
     {
         [Display(Name = "Min Balance")]
         [Range(0, (double)decimal.MaxValue, ErrorMessage = "Saving Account Must Be Zero and more")]
@@ -48,10 +48,6 @@ namespace Banking.Models
         [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Balance { get; set; }
 
-        [Display(Name = "Modify Date")]
-        [Required, StringLength(8, ErrorMessage = "No More Than 8 digits")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
-        public DateTime ModifyDate { get; set; }
 
         public virtual List<Transaction> Transactions { get; set; }
         public virtual List<BillPay> BillPays { get; set; }

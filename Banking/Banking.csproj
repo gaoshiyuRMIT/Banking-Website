@@ -30,5 +30,6 @@
      <Folder Include="Extensions\" />
      <Folder Include="Views\BillPay\" />
      <Folder Include="Views\Payee\" />
+     <Folder Include="Services\" />
   </ItemGroup>
 </Project>

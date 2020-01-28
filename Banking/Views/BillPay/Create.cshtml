@@ -21,6 +21,7 @@
                 @if (Model.Payee != null)
                 {
             <div class="p-2">
+                <input hidden asp-for="Payee.PayeeID" class="form-control" />
                 <label asp-for="Payee.Name" class="control-label"></label>
                 <input readonly asp-for="Payee.Name" class="form-control" />
                 <label asp-for="Payee.Address" class="control-label"></label>
@@ -43,15 +44,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" value="@Model.Amount.ToString("0.00")"
-                        data-val="true" data-val-number="The field Amount must be a number."
-                        data-val-required="The Amount field is required." />
+                <input asp-for="Amount" class="form-control" value="@Model.Amount.ToString("0.00")" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
 
                 <div class="form-group">
                     <label asp-for="ScheduleDateLocal" class="control-label"></label>
-                    <input type="date" asp-for="ScheduleDateLocal" class="form-control" />
+                    <input type="datetime-local" asp-for="ScheduleDateLocal" class="form-control" />
                     <span asp-validation-for="ScheduleDateLocal" class="text-danger"></span>
                 </div>
 

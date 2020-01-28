@@ -14,7 +14,7 @@ namespace Banking.Models
         BillPay = 4
     }
 
-    public class Transaction
+    public class Transaction : AModifyDate
     {
         public const int NFreeTransaction = 4;
         public static readonly Dictionary<TransactionType, decimal> ServiceFee =
@@ -39,8 +39,6 @@ namespace Banking.Models
 
         public decimal Amount { get; set; }
         public string Comment { get; set; }
-
-        public DateTime ModifyDate { get; set; }
 
         public Transaction CreateServiceTransaction()
         {

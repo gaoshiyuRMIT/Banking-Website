@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Banking.Data;
+using Banking.Services;
 
 namespace Banking
 {
@@ -38,6 +39,10 @@ namespace Banking
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                }).ConfigureServices(services =>
+                {
+                    services.AddHostedService<BillPayService>(provider =>
+                        new BillPayService(provider));
                 });
     }
 }
