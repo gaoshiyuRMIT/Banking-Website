@@ -19,12 +19,10 @@ namespace Banking.Models
 
 
         [Display(Name = "Bill Pay ID")]
-        [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
-        [RegularExpression(@"^\d{4}", ErrorMessage = "Only Numbers Allowed")]
+        [Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int BillPayID { get; set; }
 
         [ForeignKey("Account")]
-
         [Display(Name = "Account Number")]
         [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int AccountNumber { get; set; }
@@ -33,18 +31,17 @@ namespace Banking.Models
 
         [Display(Name = "Payee ID")]
         [Required, Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
-        [RegularExpression(@"^\d{4}", ErrorMessage = "Only Numbers Allowed")]
         public int PayeeID { get; set; }
         public virtual Payee Payee { get; set; }
 
         [Display(Name = "Amount")]
-        [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
+        [Required, DataType(DataType.Currency), Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Amount { get; set; }
 
 
         [Display(Name = "Schedule Date")]
-        [Required, StringLength(8, MinimumLength = 8, ErrorMessage = "No More Than 8 digits")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [Required, StringLength(12, MinimumLength = 12, ErrorMessage = "No More Than 12 digits")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ScheduleDate { get; set; }
 
         [Display(Name = "Period")]
@@ -55,6 +52,9 @@ namespace Banking.Models
         [StringLength(255, ErrorMessage = "No More Than 255 characters")]
         public string Comment { get; set; }
 
+        [Display(Name = "Schedule Date Local")]
+        [Required, StringLength(12, MinimumLength = 12, ErrorMessage = "No More Than 12 digits")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ScheduleDateLocal => ScheduleDate.ToLocalTime();
         
         public DateTime? NextDateTime

@@ -25,8 +25,7 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("AccountType")
-                        .HasColumnType("int")
-                        .HasMaxLength(1);
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
@@ -75,7 +74,7 @@ namespace Banking.Migrations
 
                     b.Property<DateTime>("ScheduleDate")
                         .HasColumnType("datetime2")
-                        .HasMaxLength(8);
+                        .HasMaxLength(12);
 
                     b.HasKey("BillPayID");
 
@@ -214,8 +213,7 @@ namespace Banking.Migrations
                         .HasMaxLength(8);
 
                     b.Property<int>("TransactionType")
-                        .HasColumnType("int")
-                        .HasMaxLength(1);
+                        .HasColumnType("int");
 
                     b.HasKey("TransactionID");
 
