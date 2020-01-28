@@ -62,7 +62,7 @@ namespace Banking.Models
                 Amount = ServiceFee[TransactionType],
                 Comment = Comment + " service charge",
                 DestAccount = DestAccount,
-                ModifyDate = ModifyDate
+                ModifyDate = DateTime.UtcNow
             };
         }
     }
