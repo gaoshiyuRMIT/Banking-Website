@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Banking.Migrations
 {
     [DbContext(typeof(BankingContext))]
-    [Migration("20200128052645_Initial")]
+    [Migration("20200128063503_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,7 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2")
-                        .HasMaxLength(8);
+                        .HasColumnType("datetime2");
 
                     b.HasKey("AccountNumber");
 
@@ -64,8 +63,7 @@ namespace Banking.Migrations
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2")
-                        .HasMaxLength(8);
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PayeeID")
                         .HasColumnType("int");
@@ -75,8 +73,7 @@ namespace Banking.Migrations
                         .HasMaxLength(1);
 
                     b.Property<DateTime>("ScheduleDate")
-                        .HasColumnType("datetime2")
-                        .HasMaxLength(12);
+                        .HasColumnType("datetime2");
 
                     b.HasKey("BillPayID");
 
@@ -137,8 +134,7 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2")
-                        .HasMaxLength(8);
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -211,8 +207,7 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2")
-                        .HasMaxLength(8);
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");

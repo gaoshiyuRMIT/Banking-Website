@@ -2,6 +2,9 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 using System.Collections.Generic;
 
@@ -43,7 +46,8 @@ namespace Banking.ViewModels
             }
             set => _accountTypes = value;
         }
-        // selected
+
+        [Display(Name = "Account Type")]
         public AccountType AccountType {
             get => _accountType;
             set

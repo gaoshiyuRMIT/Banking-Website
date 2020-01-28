@@ -1,4 +1,4 @@
-﻿@model Login
+﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Start";
 }
@@ -14,15 +14,17 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Login">
+            <input hidden asp-for="Login.PasswordHash" />
+            <span asp-validation-for="Login.PasswordHash" class="text-danger"></span>
+
             <div class="form-group">
-                <label asp-for="UserID" class="control-label"></label>
-                <input asp-for="UserID" class="form-control" />
-                <span asp-validation-for="UserID" class="text-danger"></span>
+                <label asp-for="Login.UserID" class="control-label"></label>
+                <input asp-for="Login.UserID" class="form-control" />
+                <span asp-validation-for="Login.UserID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="Password" class="control-label">Password</label>
-                <input id="Password" name="Password" type="password" class="form-control"
-                       data-val="true" data-val-required="The Password field is required." />
+                <label asp-for="Password" class="control-label">Password</label>
+                <input asp-for="Password" type="password" class="form-control" />
                 @Html.ValidationMessage("Password", new { @class = "text-danger" })
             </div>
             <div class="form-group">

@@ -9,6 +9,7 @@ using SimpleHashing;
 
 using Banking.Data;
 using Banking.Models;
+using Banking.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,7 +19,14 @@ namespace Banking.Controllers
     {
         private readonly BankingContext _context;
 
-        public IActionResult Index() => View();
+        public IActionResult Index() =>
+            View(new LoginViewModel
+            {
+                Login = new Login
+                {
+                    PasswordHash = Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                }
+            });
 
         public LoginController(BankingContext context)
         {
@@ -26,14 +34,15 @@ namespace Banking.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string userId, string password)
+        public async Task<IActionResult> Index(LoginViewModel viewModel)
         {
-            var login = await _context.Login.FindAsync(userId);
-            if (login == null || !PBKDF2.Verify(login.PasswordHash, password))
-            {
-                ModelState.AddModelError("LoginFailed", "Login failed, please try again.");
-                return View(new Login { UserID = userId });
-            }
+            var login = await _context.Login.FindAsync(viewModel.Login.UserID);
+            viewModel.Login = login;
+
+            viewModel.Validate(ModelState);
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
             HttpContext.Session.SetInt32(nameof(Customer.CustomerID), login.Customer.CustomerID);
             HttpContext.Session.SetString(nameof(Customer.Name), login.Customer.Name);
 
