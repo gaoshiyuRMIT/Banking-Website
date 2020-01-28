@@ -43,8 +43,8 @@ namespace Banking.Models
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
-        
-           
+
+        [Display(Name = "Balance")]
         [Required, Range(0d, (double)decimal.MaxValue, ErrorMessage = "Amount must be greater than zero.")]
         public decimal Balance { get; set; }
 
