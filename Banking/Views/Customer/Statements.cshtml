@@ -5,8 +5,8 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2>My Statements</h2>
-        <h3>Choose Account</h3>
+        <h2 class="display-4">My Statements</h2>
+        
         <form asp-action="Statements">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -21,7 +21,7 @@
     </div>
 </div>
 <div>
-    <a asp-action="Index">Back</a>
+    <a asp-action="Index">Back to Customers</a>
 </div>
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
