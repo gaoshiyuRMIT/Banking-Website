@@ -25,7 +25,8 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("AccountType")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(1);
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
@@ -34,7 +35,8 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasMaxLength(8);
 
                     b.HasKey("AccountNumber");
 
@@ -60,7 +62,8 @@ namespace Banking.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasMaxLength(8);
 
                     b.Property<int>("PayeeID")
                         .HasColumnType("int");
@@ -86,23 +89,30 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(9)")
+                        .HasMaxLength(9);
 
                     b.Property<string>("PostCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
 
                     b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(3)")
+                        .HasMaxLength(3);
 
                     b.Property<string>("TFN")
                         .HasColumnType("nvarchar(max)");
@@ -122,7 +132,8 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasMaxLength(8);
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -144,23 +155,30 @@ namespace Banking.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(9)")
+                        .HasMaxLength(9);
 
                     b.Property<string>("PostCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(4)")
+                        .HasMaxLength(4);
 
                     b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(3)")
+                        .HasMaxLength(3);
 
                     b.HasKey("PayeeID");
 
@@ -187,7 +205,8 @@ namespace Banking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModifyDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasMaxLength(8);
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
