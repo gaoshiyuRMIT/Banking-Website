@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -11,6 +13,7 @@ namespace Banking.ViewModels
     {
         [Range(0, 9999,
             ErrorMessage="account number is 4 digits long")]
+        [Display(Name = "Destination Account Number")]
         public int DestAccountNumber { get; set; }
         public Account DestAccount { get; set; }
 
