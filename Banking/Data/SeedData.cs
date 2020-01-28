@@ -24,7 +24,8 @@ namespace Banking.Data
                     Name = "Matthew Bolger",
                     Address = "123 Fake Street",
                     City = "Melbourne",
-                    PostCode = "3000"
+                    PostCode = "3000",
+                    Phone = "411111111"
                 },
                 new Customer
                 {
@@ -32,12 +33,14 @@ namespace Banking.Data
                     Name = "Rodney Cocker",
                     Address = "456 Real Road",
                     City = "Melbourne",
-                    PostCode = "3005"
+                    PostCode = "3005",
+                    Phone = "411111112"
                 },
                 new Customer
                 {
                     CustomerID = 2300,
-                    Name = "Shekhar Kalra"
+                    Name = "Shekhar Kalra",
+                    Phone = "411111113"
                 });
 
             context.Login.AddRange(
