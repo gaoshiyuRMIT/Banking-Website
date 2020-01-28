@@ -3,26 +3,79 @@
 @{
     ViewData["Title"] = "Accounts";
 }
+    <div class="row">
+        <div class="col-md-4">
+            <div>
+                <h2 class="display-4">Accounts</h2>
+                
+                    <form asp-action="Accounts">
 
-    <div>
-        <h2 class="display-4">Welcome, @Model.Name</h2>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group"></div>
+                    </form>
 
-        <h3>Please Choose Your Accounts</h3>
-        <!--create drop-down box for choose account type-->
-        @{List<SelectListItem> listItems = new List<SelectListItem>();
-            listItems.Add(new SelectListItem
-            {
-                Text = "Saving Account",
-                Value = "SavingAccount"
+                    @if (Model.Accounts.Exists(x => x.AccountType == AccountType.Savings))
+                    {
+                        <div>
+                            @{
+                                var Account = Model.Accounts.Find(x => x.AccountType == AccountType.Savings);
+                            }
 
-            });
-            listItems.Add(new SelectListItem
-            {
-                Text = "Checking Account",
-                Value = "CheckingAccount"
+                            <table class="table">
 
-            }); }
-        @Html.DropDownList("Choose Your Account", listItems, new { @class = "form-control" })
+                                <tr>
+                                    <th>@Html.DisplayNameFor(x => Account.AccountNumber) </th>
+                                    <td>@Html.DisplayFor(x => Account.AccountNumber)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(x => Account.AccountType)</th>
+                                    <td>@Html.DisplayFor(x => Account.AccountType)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(x => Account.Balance)</th>
+                                    <td>@Html.DisplayFor(x => Account.Balance)</td>
+                                </tr>
 
 
-    </div>
+
+                            </table>
+                        </div>
+                    }
+
+
+                    @if (Model.Accounts.Exists(x => x.AccountType == AccountType.Checking))
+                    {
+                        <div>
+                            @{
+                                var Account = Model.Accounts.Find(x => x.AccountType == AccountType.Checking);
+
+                            }
+                            <table class="table">
+
+                                <tr>
+                                    <th>@Html.DisplayNameFor(x => Account.AccountNumber) </th>
+                                    <td>@Html.DisplayFor(x => Account.AccountNumber)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(x => Account.AccountType)</th>
+                                    <td>@Html.DisplayFor(x => Account.AccountType)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(x => Account.Balance)</th>
+                                    <td>@Html.DisplayFor(x => Account.Balance)</td>
+                                </tr>
+
+
+
+                            </table>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+
+                @section Scripts {
+                    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+                }
