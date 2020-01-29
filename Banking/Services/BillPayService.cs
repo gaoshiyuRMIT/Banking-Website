@@ -66,7 +66,7 @@ namespace Banking.Services
                     }
                     else
                     {
-                        _logger.LogError(errMsg);
+                        _logger.LogError($"BillPay {billPay.BillPayID}({billPay.ScheduleDateLocal}) execution failed. {errMsg}");
                     }
                 }
             }
