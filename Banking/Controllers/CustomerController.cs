@@ -176,6 +176,5 @@ namespace Banking.Controllers
             await CMgr.UpdateAsync(customer, CustomerID);
             return RedirectToAction("Profile", customer);
         }
-
     }
 }
