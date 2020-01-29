@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 using Banking.Models;
 using Banking.Extensions;
@@ -49,6 +52,7 @@ namespace Banking.ViewModels
             set => _scheduleDate = value.SpecifySecond(0).ToUniversalTime();
             
         }
+        [Display(Name = "Schedule Date")]
         public DateTime ScheduleDate
         {
             get => _scheduleDate;
