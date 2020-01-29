@@ -33,4 +33,8 @@
      <Folder Include="Services\" />
      <Folder Include="Managers\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="ViewModels\ChangePaaawordViewModel.cs" />
+    <Compile Remove="ViewModels\ChangePaaawordViewModel.cs" />
+  </ItemGroup>
 </Project>

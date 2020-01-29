@@ -22,6 +22,7 @@
                 </span>
             </div>
         </div>
+        
         <table class="table">
 
             <tr>
@@ -54,8 +55,10 @@
                 <th>@Html.DisplayNameFor(x => x.TFN)</th>
                 <td>@Html.DisplayFor(x => x.TFN)</td>
             </tr>
-
-
+            <tr>
+                <th>@Html.DisplayNameFor(x => x.Password)</th>
+                <td>@Html.DisplayFor(x => x.Password)</td>
+            </tr>
         </table>
         <a class="btn btn-primary" asp-action="ProfileEdit">Edit</a>
 
