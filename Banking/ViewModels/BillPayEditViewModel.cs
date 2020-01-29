@@ -92,7 +92,8 @@ namespace Banking.ViewModels
                 ScheduleDate = billPay.ScheduleDate,
                 Period = billPay.Period,
                 BillPayEditOp = BillPayEditOp.Edit,
-                Amount = billPay.Amount
+                Amount = billPay.Amount,
+                Payee = billPay.Payee
             };
         }
     }
