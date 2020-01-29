@@ -37,8 +37,7 @@ namespace Banking.Controllers
         {
             if (discard == 1)
             {
-                HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
-                HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
+                BillPaySessionKey.Clear(HttpContext.Session);
             }
             var billPays = BPMgr.GetBillPaysOfCustomer(CustomerID);
             return View(billPays);
@@ -106,7 +105,6 @@ namespace Banking.Controllers
                 return RedirectToAction("Index");
 
             viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
-
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
@@ -114,9 +112,7 @@ namespace Banking.Controllers
             BillPay billPay = viewModel.GenerateBillPay();
             await BPMgr.UpdateAsync(billPay, billPayID.Value);
 
-            HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
-            HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
-
+            BillPaySessionKey.Clear(HttpContext.Session);
             return RedirectToAction("Index");
         }
 
@@ -125,7 +121,6 @@ namespace Banking.Controllers
         public async Task<IActionResult> Create(BillPayEditViewModel viewModel)
         {
             viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
-
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
@@ -133,9 +128,7 @@ namespace Banking.Controllers
             var billPay = viewModel.GenerateBillPay();
             await BPMgr.AddToAccountAsync(viewModel.Account, billPay);
 
-            HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
-            HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
-
+            BillPaySessionKey.Clear(HttpContext.Session);
             return RedirectToAction("Index");
         }
     }
