@@ -24,13 +24,16 @@ namespace Banking.Controllers
         private const string statementsResultSessionKey = "StatementsResultAccountNumber";
         private IAccountManager AMgr { get; }
         private ICustomerManager CMgr { get; }
+        private ILoginManager LMgr { get; }
 
         private int CustomerID => CustomerSessionKey.GetCustomerID(HttpContext.Session).Value;
 
-        public CustomerController(IAccountManager accountManager, ICustomerManager customerManager)
+        public CustomerController(IAccountManager accountManager, ICustomerManager customerManager,
+            ILoginManager loginManager)
         {
             AMgr = accountManager;
             CMgr = customerManager;
+            LMgr = loginManager;
         }
 
         // GET: /<controller>/
@@ -163,18 +166,20 @@ namespace Banking.Controllers
         public async Task<IActionResult> ProfileEdit()
         {
             var customer = await CMgr.GetCustomerAsync(CustomerID);
-            return View(customer);
+            var viewModel = ProfileEditViewModel.FromCustomer(customer);
+            return View(viewModel);
         }
 
         [HttpPost]
         [Route("Profile/Edit")]
         public async Task<IActionResult> ProfileEdit(
-            [Bind("Name,TFN,Address,City,State,PostCode,Phone")] Customer customer)
+            [Bind("Name,TFN,Address,City,State,PostCode,Phone,Password")] ProfileEditViewModel viewModel)
         {
             if (!ModelState.IsValid)
-                return View(customer);
-            await CMgr.UpdateAsync(customer, CustomerID);
-            return RedirectToAction("Profile", customer);
+                return View(viewModel);
+            var login = await LMgr.GetLoginForCustomerAsync(CustomerID);
+            await LMgr.UpdatePasswordAsync(login, viewModel.Password);
+            return RedirectToAction("Profile", viewModel);
         }
     }
 }
