@@ -79,6 +79,8 @@ namespace Banking.Models
             if (Account.Balance - Amount < Account.MinBalance)
             {
                 errMsg = "The amount after deduction would be lower than the minimum allowed.";
+                if (Period != BillPayPeriod.OnceOff)
+                    ScheduleDate = NextDateTime.Value;
                 return false;
             }
             Account.Balance -= Amount;
