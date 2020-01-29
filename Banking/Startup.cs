@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 using Banking.Data;
+using Banking.Managers;
 
 namespace Banking
 {
@@ -37,7 +38,8 @@ namespace Banking
                 // Make the session cookie essential.
                 options.Cookie.IsEssential = true;
             });
-
+            services.AddScoped<IAccountManager, AccountManager>();
+            services.AddScoped<ICustomerManager, CustomerManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

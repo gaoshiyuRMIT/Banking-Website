@@ -103,6 +103,7 @@ namespace Banking.Models
                 ModifyDate = DateTime.UtcNow,
                 Comment = comment
             };
+            Transactions.Add(t);
             if (t.ShouldCharge)
             {
                 int nShouldCharge = Transactions.Where(x => x.ShouldCharge).Count();

@@ -10,6 +10,7 @@ using Banking.Models;
 using Banking.ViewModels;
 using Banking.Data;
 using Banking.Attributes;
+using Banking.Managers;
 
 using X.PagedList;
 
@@ -21,26 +22,27 @@ namespace Banking.Controllers
     public class CustomerController : Controller
     {
         private const string statementsResultSessionKey = "StatementsResultAccountNumber";
-        private readonly BankingContext _context;
+        private IAccountManager AMgr { get; }
+        private ICustomerManager CMgr { get; }
 
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
-        public CustomerController(BankingContext context)
+        public CustomerController(IAccountManager accountManager, ICustomerManager customerManager)
         {
-            _context = context;
+            AMgr = accountManager;
+            CMgr = customerManager;
         }
 
         // GET: /<controller>/
         public async Task<IActionResult> Index()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
-
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             return View(customer);
         }
 
         public async Task<IActionResult> Withdraw()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             var viewModel = new WithdrawViewModel
             {
                 Customer = customer
@@ -51,17 +53,12 @@ namespace Banking.Controllers
         [HttpPost]
         public async Task<IActionResult> Withdraw(WithdrawViewModel viewModel)
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
-            viewModel.Customer = customer;
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
             viewModel.Validate(ModelState);
-
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var account = viewModel.Account;
-            account.Withdraw(viewModel.Amount, viewModel.Comment);
-            await _context.SaveChangesAsync();
+            await AMgr.WithdrawAsync(viewModel.Account, viewModel.Amount, viewModel.Comment);
 
             viewModel.OperationStatus = OperationStatus.Successful;
             viewModel.Clear();
@@ -70,7 +67,7 @@ namespace Banking.Controllers
 
         public async Task<IActionResult> Deposit()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             var viewModel = new DepositViewModel
             {
                 Customer = customer
@@ -81,17 +78,12 @@ namespace Banking.Controllers
         [HttpPost]
         public async Task<IActionResult> Deposit(DepositViewModel viewModel)
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
-            viewModel.Customer = customer;
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
             viewModel.Validate(ModelState);
-
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var account = viewModel.Account;
-            account.Deposit(viewModel.Amount, viewModel.Comment);
-            await _context.SaveChangesAsync();
+            await AMgr.DepositAsync(viewModel.Account, viewModel.Amount, viewModel.Comment);
 
             viewModel.OperationStatus = OperationStatus.Successful;
             viewModel.Clear();
@@ -100,7 +92,7 @@ namespace Banking.Controllers
 
         public async Task<IActionResult> Transfer()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             var viewModel = new TransferViewModel
             {
                 Customer = customer
@@ -111,18 +103,13 @@ namespace Banking.Controllers
         [HttpPost]
         public async Task<IActionResult> Transfer(TransferViewModel viewModel)
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
-            viewModel.Customer = customer;
-            var destAccount = await _context.Account.FindAsync(viewModel.DestAccountNumber);
-            viewModel.DestAccount = destAccount;
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
+            viewModel.DestAccount = await AMgr.GetAccountAsync(viewModel.DestAccountNumber);
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var account = viewModel.Account;
-            account.Transfer(viewModel.DestAccount, viewModel.Amount, viewModel.Comment);
-            await _context.SaveChangesAsync();
+            await AMgr.TransferAsync(viewModel.Account, viewModel.DestAccount, viewModel.Amount, viewModel.Comment);
 
             viewModel.OperationStatus = OperationStatus.Successful;
             viewModel.Clear();
@@ -131,7 +118,7 @@ namespace Banking.Controllers
 
         public async Task<IActionResult> Statements()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             var viewModel = new BasicOpViewModel
             {
                 Customer = customer
@@ -142,7 +129,7 @@ namespace Banking.Controllers
         [HttpPost]
         public async Task<IActionResult> Statements(BasicOpViewModel viewModel)
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             viewModel.Customer = customer;
 
             viewModel.Validate(ModelState);
@@ -159,30 +146,23 @@ namespace Banking.Controllers
             int? accountNumber = HttpContext.Session.GetInt32(statementsResultSessionKey);
             if (accountNumber == null)
                 return RedirectToAction("Statements");
-            var account = await _context.Account.FindAsync(accountNumber);
 
-            const int pageSize = 4;
-            var transactions = _context.Transaction
-                .Where(x => x.AccountNumber == accountNumber)
-                .OrderByDescending<Transaction, DateTime>(x => x.ModifyDate);
-            var pagedList = await transactions
-                .ToPagedListAsync<Transaction>(page, pageSize);
-
+            var account = await AMgr.GetAccountAsync(accountNumber.Value);
+            IPagedList<Transaction> transactions = await AMgr.GetPagedTransactionsAsync(accountNumber.Value, page);
             return View(new StatementsResultViewModel {
-                Transactions = pagedList, Account = account });
+                Transactions = transactions, Account = account });
         }
 
         public async Task<IActionResult> Profile()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
-
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             return View(customer);
         }
 
         [Route("Profile/Edit")]
         public async Task<IActionResult> ProfileEdit()
         {
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            var customer = await CMgr.GetCustomerAsync(CustomerID);
             return View(customer);
         }
 
@@ -193,10 +173,7 @@ namespace Banking.Controllers
         {
             if (!ModelState.IsValid)
                 return View(customer);
-
-            customer.CustomerID = CustomerID;
-            _context.Update(customer);
-            await _context.SaveChangesAsync();
+            await CMgr.UpdateAsync(customer, CustomerID);
             return RedirectToAction("Profile", customer);
         }
     }
