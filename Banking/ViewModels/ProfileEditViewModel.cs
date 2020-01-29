@@ -1,23 +1,26 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SimpleHashing;
+
+using Banking.Models;
 
 namespace Banking.ViewModels
 {
-    public class ChangePasswordViewModels : LoginViewModel
+    public class ProfileEditViewModel : Customer
     {
-        //public ChangePasswordViewModels()
-       // {
-       // }
+        [Required, StringLength(20)]
+        public string Password { get; set; }
 
-
-        //public string  password{ get; set; }
-
-        //public string ChangePassword { get; set; }
-
-
+        public static ProfileEditViewModel FromCustomer(Customer c) {
+            return new ProfileEditViewModel 
+            {
+                Name = c.Name,
+                Address = c.Address,
+                City = c.City,
+                State = c.State,
+                PostCode = c.PostCode,
+                Phone = c.Phone,
+                TFN = c.TFN
+            };
+        }
     }
 }
