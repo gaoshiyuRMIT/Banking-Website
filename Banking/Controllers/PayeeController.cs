@@ -12,8 +12,7 @@ using Banking.Attributes;
 using Banking.Data;
 using Banking.Models;
 using Banking.ViewModels;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Banking.Managers;
 
 namespace Banking.Controllers
 {
@@ -22,31 +21,26 @@ namespace Banking.Controllers
     [Route("Customer/BillPay/Payee")]
     public class PayeeController : Controller
     {
-        private readonly BankingContext _context;
+        private IPayeeManager PMgr {get;}
 
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
-        public PayeeController(BankingContext context)
+        public PayeeController(IPayeeManager pmgr)
         {
-            _context = context;
+            PMgr = pmgr;
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-            var payees = from account in _context.Account
-                         join billPay in _context.BillPay
-                         on account.AccountNumber equals billPay.AccountNumber
-                         where account.CustomerID == CustomerID
-                         select billPay.Payee;
-            payees = payees.Distinct<Payee>().OrderBy<Payee, string>(x => x.Name);
+            var payees = PMgr.GetPayeesOfCustomer(CustomerID);
             return View(payees);
         }
 
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] int payeeID)
         {
-            var payee = await _context.Payee.FindAsync(payeeID);
+            var payee = await PMgr.GetPayeeAsync(payeeID);
 
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
             viewModel.Payee = payee;

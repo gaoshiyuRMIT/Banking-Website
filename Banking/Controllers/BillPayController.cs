@@ -11,6 +11,7 @@ using Banking.Attributes;
 using Banking.Data;
 using Banking.Models;
 using Banking.ViewModels;
+using Banking.Managers;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,13 +21,15 @@ namespace Banking.Controllers
     [Route("Customer/BillPay")]
     public class BillPayController : Controller
     {
-        private readonly BankingContext _context;
+        private ICustomerManager CMgr {get;}
+        private IBillPayManager BPMgr {get;}
 
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
-        public BillPayController(BankingContext context)
+        public BillPayController(ICustomerManager customerManager, IBillPayManager billPayManager)
         {
-            _context = context;
+            CMgr = customerManager;
+            BPMgr = billPayManager;
         }
 
         // GET: /<controller>/
@@ -34,12 +37,9 @@ namespace Banking.Controllers
         {
             if (discard == 1)
             {
-                HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
-                HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
+                BillPaySessionKey.Clear(HttpContext.Session);
             }
-            IEnumerable<BillPay> billPays = _context.BillPay
-                .Where(x => x.Account.CustomerID == CustomerID)
-                .OrderBy<BillPay, DateTime>(x => x.ScheduleDate);
+            var billPays = BPMgr.GetBillPaysOfCustomer(CustomerID);
             return View(billPays);
         }
 
@@ -47,29 +47,18 @@ namespace Banking.Controllers
         public async Task<IActionResult> Edit(int billPayId)
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-
             if (viewModel == null)
             {
-                var billPay = await _context.BillPay.FindAsync(billPayId);
-
+                var billPay = await BPMgr.GetBillPayAsync(billPayId);
                 if (billPay == null)
                     return NotFound();
 
-                viewModel = new BillPayEditViewModel
-                {
-                    AccountType = billPay.Account.AccountType,
-                    ScheduleDateLocal = billPay.ScheduleDate.ToLocalTime(),
-                    Period = billPay.Period,
-                    BillPayEditOp = BillPayEditOp.Edit,
-                    Amount = billPay.Amount
-                };
-
+                viewModel = BillPayEditViewModel.FromBillPay(billPay);
+                
                 HttpContext.Session.SetInt32(BillPaySessionKey.EditBillPayID, billPayId);
             }
 
-            var customer = await _context.Customer.FindAsync(CustomerID);
-            viewModel.Customer = customer;
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
             return View(viewModel);
         }
 
@@ -82,11 +71,8 @@ namespace Banking.Controllers
                 {
                     ScheduleDate = DateTime.UtcNow
                 };
-
-            var customer = await _context.Customer.FindAsync(CustomerID);
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
             viewModel.BillPayEditOp = BillPayEditOp.Create;
-            viewModel.Customer = customer;
 
             return View(viewModel);
         }
@@ -118,28 +104,15 @@ namespace Banking.Controllers
             if (billPayID == null)
                 return RedirectToAction("Index");
 
-            var customer = await _context.Customer.FindAsync(CustomerID);
-            viewModel.Customer = customer;
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            BillPay billPay = new BillPay
-            {
-                BillPayID = billPayID.Value,
-                AccountNumber = viewModel.Account.AccountNumber,
-                Period = viewModel.Period,
-                Amount = viewModel.Amount,
-                ScheduleDate = viewModel.ScheduleDate,
-                Payee = viewModel.Payee
-            };
-            _context.BillPay.Update(billPay);
-            await _context.SaveChangesAsync();
+            BillPay billPay = viewModel.GenerateBillPay();
+            await BPMgr.UpdateAsync(billPay, billPayID.Value);
 
-            HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
-            HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
-
+            BillPaySessionKey.Clear(HttpContext.Session);
             return RedirectToAction("Index");
         }
 
@@ -147,25 +120,15 @@ namespace Banking.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BillPayEditViewModel viewModel)
         {
-            viewModel.Customer = await _context.Customer.FindAsync(CustomerID);
-
+            viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var billPay = new BillPay
-            {
-                Amount = viewModel.Amount,
-                Payee = viewModel.Payee,
-                Period = viewModel.Period,
-                ScheduleDate = viewModel.ScheduleDate
-            };
-            viewModel.Account.BillPays.Add(billPay);
-            await _context.SaveChangesAsync();
+            var billPay = viewModel.GenerateBillPay();
+            await BPMgr.AddToAccountAsync(viewModel.Account, billPay);
 
-            HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
-            HttpContext.Session.Remove(BillPaySessionKey.EditOrCreate);
-
+            BillPaySessionKey.Clear(HttpContext.Session);
             return RedirectToAction("Index");
         }
     }

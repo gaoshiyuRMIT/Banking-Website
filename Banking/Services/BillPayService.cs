@@ -19,10 +19,12 @@ namespace Banking.Services
         private IServiceProvider _services;
         private static readonly TimeSpan interval = new TimeSpan(0, 0, 1);
         private System.Timers.Timer _timer;
+        private ILogger<BillPayService> _logger;
 
         public BillPayService(IServiceProvider services)
         {
             _services = services;
+            _logger = services.GetRequiredService<ILogger<BillPayService>>();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -58,12 +60,14 @@ namespace Banking.Services
                 {
                     string errMsg;
                     if (billPay.ExecuteBillPay(out errMsg))
+                    {
                         await context.SaveChangesAsync();
+                        _logger.LogInformation($"Executed BillPay {billPay.BillPayID}");
+                    }
                     else
                     {
-                        // TODO: log errors
+                        _logger.LogError(errMsg);
                     }
-                    Console.WriteLine($"executed bill pay {billPay.BillPayID}");
                 }
             }
         }

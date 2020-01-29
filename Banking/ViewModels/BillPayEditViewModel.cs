@@ -58,7 +58,6 @@ namespace Banking.ViewModels
         public Payee Payee { get; set; }
 
         public BillPayEditOp BillPayEditOp { get; set; }
-        public PayeeOp PayeeOp { get; set; }
 
         public override void Validate(ModelStateDictionary modelState)
         {
@@ -71,6 +70,30 @@ namespace Banking.ViewModels
                 modelState.AddModelError("Payee",
                     "Must specify payee.");
         }
-       
+
+        public BillPay GenerateBillPay() 
+        {
+            return new BillPay 
+            {
+                Period = Period,
+                ScheduleDate = ScheduleDate,
+                Comment = Comment,
+                Amount = Amount,
+                Account = Account,
+                Payee = Payee
+            };
+
+        }
+
+        public static BillPayEditViewModel FromBillPay(BillPay billPay) 
+        {
+            return new BillPayEditViewModel {
+                AccountType = billPay.Account.AccountType,
+                ScheduleDate = billPay.ScheduleDate,
+                Period = billPay.Period,
+                BillPayEditOp = BillPayEditOp.Edit,
+                Amount = billPay.Amount
+            };
+        }
     }
 }

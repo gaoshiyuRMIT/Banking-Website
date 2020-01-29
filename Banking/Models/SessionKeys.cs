@@ -37,5 +37,12 @@ namespace Banking.Models
         {
             SetToSession(session, EditOrCreate, model);
         }
+
+        public static void Clear(ISession session) 
+        {
+            session.Remove(EditOrCreate);
+            session.Remove(EditBillPayID);
+        }
+
     }
 }

@@ -5,19 +5,16 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using SimpleHashing;
 
-using Banking.Data;
 using Banking.Models;
 using Banking.ViewModels;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Banking.Managers;
 
 namespace Banking.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly BankingContext _context;
+        private ILoginManager LMgr { get; }
 
         public IActionResult Index() =>
             View(new LoginViewModel
@@ -28,23 +25,22 @@ namespace Banking.Controllers
                 }
             });
 
-        public LoginController(BankingContext context)
+        public LoginController(ILoginManager lmgr)
         {
-            _context = context;
+            LMgr = lmgr;
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel viewModel)
         {
-            var login = await _context.Login.FindAsync(viewModel.Login.UserID);
-            viewModel.Login = login;
+            viewModel.Login = await LMgr.GetLoginAsync(viewModel.Login.UserID);
 
             viewModel.Validate(ModelState);
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            HttpContext.Session.SetInt32(nameof(Customer.CustomerID), login.Customer.CustomerID);
-            HttpContext.Session.SetString(nameof(Customer.Name), login.Customer.Name);
+            HttpContext.Session.SetInt32(nameof(Customer.CustomerID), viewModel.Login.Customer.CustomerID);
+            HttpContext.Session.SetString(nameof(Customer.Name), viewModel.Login.Customer.Name);
 
             return RedirectToAction("Index", "Customer");
         }
