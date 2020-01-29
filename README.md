@@ -8,5 +8,5 @@ We make use of business objects for the purpose of keeping controllers lean in m
 
 
 ## Reference
-    - Week 8, "NorthWindWithPagingExample" by Matthew Bolger
-    - "MvcMovie" from MSDN "Get Started with ASP.NET Core Mvc"
+- Week 8, "NorthWindWithPagingExample" by Matthew Bolger
+- "MvcMovie" from MSDN "Get Started with ASP.NET Core Mvc"
