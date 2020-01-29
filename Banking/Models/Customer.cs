@@ -13,12 +13,14 @@ namespace Banking.Models
         [Display(Name = "Customer ID")]
         [Range(0, 9999, ErrorMessage = "No More Than 4 digits")]
         public int CustomerID { get; set; }
-
-
         
         [Display(Name = "TFN")]
         [StringLength(11, ErrorMessage = "Must be Tax File Number")]
         public string TFN { get; set; }
+
+        [Required, StringLength(20)]
+        public string Password { get; set; }
+
 
         public virtual List<Account> Accounts { get; set; }
     }
