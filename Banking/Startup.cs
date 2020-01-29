@@ -42,6 +42,7 @@ namespace Banking
             services.AddScoped<ICustomerManager, CustomerManager>();
             services.AddScoped<ILoginManager, LoginManager>();
             services.AddScoped<IPayeeManager, PayeeManager>();
+            services.AddScoped<IBillPayManager, BillPayManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
