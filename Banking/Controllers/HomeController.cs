@@ -20,7 +20,10 @@ namespace Banking.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "Login");
+            int? customerIdNullable = CustomerSessionKey.GetCustomerID(HttpContext.Session);
+            if (customerIdNullable == null)
+                return RedirectToAction("Index", "Login");
+            return RedirectToAction("Index", "Customer");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

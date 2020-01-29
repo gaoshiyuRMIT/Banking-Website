@@ -28,7 +28,9 @@ namespace Banking.ViewModels
                 _accountTypes.Clear();
                 _account = null;
             }
+
         }
+        [Display(Name = "Account Types")]
         public List<SelectListItem> AccountTypes {
             get {
                 if (_accountTypes.Count == 0 && Customer != null)

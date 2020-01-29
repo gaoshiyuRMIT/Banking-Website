@@ -47,28 +47,35 @@ namespace Banking.Services
 
         private async Task ExecuteBillPays(CancellationToken cancellationToken)
         {
-            using (var scope = _services.CreateScope())
+            try
             {
-                var context = new BankingContext(
-                    scope.ServiceProvider
-                        .GetRequiredService<DbContextOptions<BankingContext>>());
-                var now = DateTime.UtcNow;
-                var billPaysQ = context.BillPay.Where(x =>
-                    x.ScheduleDate > now - interval && x.ScheduleDate <= now);
-                var billPays = await billPaysQ.ToListAsync();
-                foreach (var billPay in billPays)
+                using (var scope = _services.CreateScope())
                 {
-                    string errMsg;
-                    if (billPay.ExecuteBillPay(out errMsg))
+                    var context = new BankingContext(
+                        scope.ServiceProvider
+                            .GetRequiredService<DbContextOptions<BankingContext>>());
+                    var now = DateTime.UtcNow;
+                    var billPaysQ = context.BillPay.Where(x =>
+                        x.ScheduleDate > now - interval && x.ScheduleDate <= now);
+                    var billPays = await billPaysQ.ToListAsync();
+                    foreach (var billPay in billPays)
                     {
-                        await context.SaveChangesAsync();
-                        _logger.LogInformation($"Executed BillPay {billPay.BillPayID}");
-                    }
-                    else
-                    {
-                        _logger.LogError(errMsg);
+                        string errMsg;
+                        if (billPay.ExecuteBillPay(out errMsg))
+                        {
+                            await context.SaveChangesAsync();
+                            _logger.LogInformation($"Executed BillPay {billPay.BillPayID}");
+                        }
+                        else
+                        {
+                            _logger.LogError($"BillPay {billPay.BillPayID}({billPay.ScheduleDateLocal}) execution failed. {errMsg}");
+                        }
                     }
                 }
+            } catch (Exception e)
+            {
+                DateTime now = DateTime.Now;
+                _logger.LogError(0, e, "An exception occured when executing bill pays");
             }
         }
 

@@ -39,8 +39,7 @@ namespace Banking.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            HttpContext.Session.SetInt32(nameof(Customer.CustomerID), viewModel.Login.Customer.CustomerID);
-            HttpContext.Session.SetString(nameof(Customer.Name), viewModel.Login.Customer.Name);
+            CustomerSessionKey.SetToSession(viewModel.Login.Customer, HttpContext.Session);
 
             return RedirectToAction("Index", "Customer");
         }

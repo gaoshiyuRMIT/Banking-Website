@@ -10,7 +10,7 @@ namespace Banking.Attributes
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var customerID = context.HttpContext.Session.GetInt32(nameof(Customer.CustomerID));
+            var customerID = CustomerSessionKey.GetCustomerID(context.HttpContext.Session);
             if (!customerID.HasValue)
             {
                 context.Result = new RedirectToActionResult("Index", "Home", null);
