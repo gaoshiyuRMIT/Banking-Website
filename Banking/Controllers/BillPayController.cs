@@ -24,7 +24,7 @@ namespace Banking.Controllers
         private ICustomerManager CMgr {get;}
         private IBillPayManager BPMgr {get;}
 
-        private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
+        private int CustomerID => CustomerSessionKey.GetCustomerID(HttpContext.Session).Value;
 
         public BillPayController(ICustomerManager customerManager, IBillPayManager billPayManager)
         {

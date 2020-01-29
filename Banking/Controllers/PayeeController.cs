@@ -23,7 +23,7 @@ namespace Banking.Controllers
     {
         private IPayeeManager PMgr {get;}
 
-        private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
+        private int CustomerID => CustomerSessionKey.GetCustomerID(HttpContext.Session).Value;
 
         public PayeeController(IPayeeManager pmgr)
         {

@@ -45,4 +45,25 @@ namespace Banking.Models
         }
 
     }
+
+    public class CustomerSessionKey : SessionKeyBase
+    {
+        public static string CustomerIDK = "LoggedinCustomerID";
+        public static string CustomerNameK = "LoggedinCustomerName";
+        public static void SetToSession(Customer customer, ISession session) 
+        {
+            session.SetInt32(CustomerIDK, customer.CustomerID);
+            session.SetString(CustomerNameK, customer.Name);
+        }
+
+        public static int? GetCustomerID(ISession session)
+        {
+            return session.GetInt32(CustomerIDK);
+        }
+
+        public static string GetName(ISession session) 
+        {
+            return session.GetString(CustomerNameK);
+        }
+    }
 }
