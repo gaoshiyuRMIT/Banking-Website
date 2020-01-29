@@ -48,28 +48,18 @@ namespace Banking.Controllers
         public async Task<IActionResult> Edit(int billPayId)
         {
             var viewModel = BillPaySessionKey.GetEditViewModelFromSession(HttpContext.Session);
-
             if (viewModel == null)
             {
                 var billPay = await BPMgr.GetBillPayAsync(billPayId);
-
                 if (billPay == null)
                     return NotFound();
 
-                viewModel = new BillPayEditViewModel
-                {
-                    AccountType = billPay.Account.AccountType,
-                    ScheduleDateLocal = billPay.ScheduleDate.ToLocalTime(),
-                    Period = billPay.Period,
-                    BillPayEditOp = BillPayEditOp.Edit,
-                    Amount = billPay.Amount
-                };
+                viewModel = BillPayEditViewModel.FromBillPay(billPay);
                 
                 HttpContext.Session.SetInt32(BillPaySessionKey.EditBillPayID, billPayId);
             }
 
             viewModel.Customer = await CMgr.GetCustomerAsync(CustomerID);
-
             return View(viewModel);
         }
 
@@ -121,14 +111,7 @@ namespace Banking.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            BillPay billPay = new BillPay
-            {
-                AccountNumber = viewModel.Account.AccountNumber,
-                Period = viewModel.Period,
-                Amount = viewModel.Amount,
-                ScheduleDate = viewModel.ScheduleDate,
-                Payee = viewModel.Payee
-            };
+            BillPay billPay = viewModel.GenerateBillPay();
             await BPMgr.UpdateAsync(billPay, billPayID.Value);
 
             HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
@@ -147,13 +130,7 @@ namespace Banking.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            var billPay = new BillPay
-            {
-                Amount = viewModel.Amount,
-                Payee = viewModel.Payee,
-                Period = viewModel.Period,
-                ScheduleDate = viewModel.ScheduleDate
-            };
+            var billPay = viewModel.GenerateBillPay();
             await BPMgr.AddToAccountAsync(viewModel.Account, billPay);
 
             HttpContext.Session.Remove(BillPaySessionKey.EditBillPayID);
