@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Banking.Models;
 
@@ -7,8 +8,9 @@ namespace Banking.ViewModels
 {
     public class ProfileEditViewModel : Customer
     {
-        [Required, StringLength(20)]
+        [StringLength(20)]
         public string Password { get; set; }
+        public OperationStatus OperationStatus {get;set;} = OperationStatus.Pending;
 
         public static ProfileEditViewModel FromCustomer(Customer c) {
             return new ProfileEditViewModel 
@@ -20,6 +22,29 @@ namespace Banking.ViewModels
                 PostCode = c.PostCode,
                 Phone = c.Phone,
                 TFN = c.TFN
+            };
+        }
+
+        public void Validate(ModelStateDictionary modelState)
+        {
+            Password = Password.Trim();
+            if (string.IsNullOrEmpty(Password))
+            {
+                modelState.AddModelError("Password", 
+                    "Password is required and cannot be white spaces.");
+            }
+        }
+
+        public Customer GenerateCustomer() {
+            return new Customer 
+            {
+                Name = Name,
+                Address = Address,
+                City = City,
+                State = State,
+                PostCode = PostCode,
+                Phone = Phone,
+                TFN = TFN
             };
         }
     }

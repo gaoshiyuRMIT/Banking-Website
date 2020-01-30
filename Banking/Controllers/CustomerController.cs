@@ -172,13 +172,29 @@ namespace Banking.Controllers
         [HttpPost]
         [Route("Profile/Edit")]
         public async Task<IActionResult> ProfileEdit(
-            [Bind("Name,TFN,Address,City,State,PostCode,Phone,Password")] ProfileEditViewModel viewModel)
+            [Bind("Name,TFN,Address,City,State,PostCode,Phone")] ProfileEditViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return View(viewModel);
+
+            var customer = viewModel.GenerateCustomer();
+            await CMgr.UpdateAsync(customer, CustomerID);
+            return RedirectToAction("Profile");
+        }
+
+        [HttpPost]
+        [Route("Profile/Edit/Password")]
+        public async Task<IActionResult> EditPassword(ProfileEditViewModel viewModel)
+        {
+            viewModel.Validate(ModelState);
+            if (!ModelState.IsValid)
+                return View("ProfileEdit", viewModel);
             var login = await LMgr.GetLoginForCustomerAsync(CustomerID);
             await LMgr.UpdatePasswordAsync(login, viewModel.Password);
-            return RedirectToAction("Profile", viewModel);
+
+            viewModel.Password = null;
+            viewModel.OperationStatus = OperationStatus.Successful;
+            return View("ProfileEdit", viewModel);
         }
     }
 }
