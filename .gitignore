@@ -6,6 +6,7 @@ appsettings.json
 /bin
 /obj
 /.vs
+/.vscode
 
 /Banking/bin
 /Banking/obj
