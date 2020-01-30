@@ -10,20 +10,21 @@ using Banking.Models;
 
 namespace Banking.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : IViewModel
     {
         public Login Login { get; set; }
 
         [Required, StringLength(20)]
         public string Password { get; set; }
 
-        public override void Validate(ModelStateDictionary modelState)
+        public void Validate(ModelStateDictionary modelState)
         {
             if (Login == null || !PBKDF2.Verify(Login.PasswordHash, Password))
             {
                 modelState.AddModelError("LoginFailed", "Login failed, please try again.");
             }
         }
+        public void Clear() {}
     }
 
 }
