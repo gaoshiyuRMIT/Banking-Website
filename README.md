@@ -1,7 +1,7 @@
 # a2-s3734720-s3596621
 ## Group Info
-s3734720 Shiyu Gao
-s3596621 Jinming Liu
+- s3734720 Shiyu Gao
+- s3596621 Jinming Liu
 
 ## Use of Business Objects
 We make use of business objects for the purpose of keeping controllers lean in many places:
