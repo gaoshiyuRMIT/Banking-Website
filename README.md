@@ -1,4 +1,8 @@
 # a2-s3734720-s3596621
+## Group Info
+s3734720 Shiyu Gao
+s3596621 Jinming Liu
+
 ## Use of Business Objects
 We make use of business objects for the purpose of keeping controllers lean in many places:
 - We pulled complex validation logic from controllers into view models, and imposed simpler validation using built-in or custom data annotation attributes, e.g. `AusState`. 
